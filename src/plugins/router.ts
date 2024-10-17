@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router/auto';
 import { authRoutes } from '@/modules/auth/routes';
+import { dashboardRoutes } from '@/modules/dashboard/dashboard.routes';
 
 const routes = [
     {
         path: '/',
-        component: () =>
-            import('@/modules/dashboard/views/dashboard-view.vue'),
+        children: [...dashboardRoutes],
     },
     {
         path: '/auth',
