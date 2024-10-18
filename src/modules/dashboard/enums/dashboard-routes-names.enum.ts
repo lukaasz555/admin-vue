@@ -1,7 +1,7 @@
 export enum DashboardRoutesNames {
-    DASHBOARD = 'DASHBOARD',
-    PRODUCTS = 'PRODUCTS',
-    PRODUCT = 'PRODUCT',
-    STAFF = 'STAFF',
-    CATEGORIES = 'CATEGORIES',
+  DASHBOARD = 'dashboard',
+  PRODUCTS = 'products',
+  PRODUCT = 'product',
+  STAFF = 'staff',
+  CATEGORIES = 'categories',
 }

@@ -1,3 +1,3 @@
 <template>
-    <div>Categoriess</div>
+  <div>Categoriess</div>
 </template>

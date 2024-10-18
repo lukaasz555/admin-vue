@@ -1,3 +1,3 @@
 <template>
-    <div>ForgotPassword</div>
+  <div>ForgotPassword</div>
 </template>

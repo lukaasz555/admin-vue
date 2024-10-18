@@ -1,34 +1,28 @@
-/**
- * .eslint.js
- *
- * ESLint configuration file.
- */
-
 module.exports = {
-    root: true,
-    env: {
-        node: true,
-    },
-    extends: [
-        'vuetify',
-        '@vue/eslint-config-typescript',
-        './.eslintrc-auto-import.json',
-        'plugin:vue/vue3-essential',
-        'plugin:vue/vue3-strongly-recommended',
-        'plugin:vue/vue3-recommended',
-        'plugin:prettier/recommended',
+  root: true,
+  env: {
+    node: true,
+  },
+  extends: [
+    'vuetify',
+    '@vue/eslint-config-typescript',
+    './.eslintrc-auto-import.json',
+    'plugin:vue/vue3-essential',
+    'plugin:vue/vue3-strongly-recommended',
+    'plugin:vue/vue3-recommended',
+    'plugin:prettier/recommended',
+  ],
+  rules: {
+    'no-multiple-empty-lines': ['warn', { max: 1 }],
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        trailingComma: 'all',
+        tabWidth: 2,
+        semi: true,
+        printWidth: 70,
+      },
     ],
-    rules: {
-        'no-multiple-empty-lines': ['warn', { max: 1 }],
-        'prettier/prettier': [
-            'error',
-            {
-                singleQuote: true,
-                trailingComma: 'all',
-                tabWidth: 4,
-                semi: true,
-                printWidth: 70,
-            },
-        ],
-    },
+  },
 };
