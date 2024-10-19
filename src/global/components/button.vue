@@ -8,11 +8,13 @@
     ]"
   >
     <v-btn
+      :aria-disabled="isDisabled"
       :block="isFullWidth"
       :disabled="isDisabled"
       :height="height"
       :loading="isLoading"
       :ripple="false"
+      :type="type"
       :variant="variant"
       @click="emit('click')"
     >
@@ -28,7 +30,7 @@ const emit = defineEmits<{
   (e: 'click'): void;
 }>();
 
-const props = defineProps({
+defineProps({
   label: { type: String, default: 'Save' },
   align: {
     type: String as PropType<'left' | 'center' | 'right'>,
@@ -37,6 +39,10 @@ const props = defineProps({
   variant: {
     type: String as PropType<'outlined' | 'flat' | 'text' | 'plain'>,
     default: 'flat',
+  },
+  type: {
+    type: String as PropType<'reset' | 'submit' | 'button'>,
+    default: 'button',
   },
   height: { type: Number, default: undefined },
   isFullWidth: { type: Boolean, default: false },
