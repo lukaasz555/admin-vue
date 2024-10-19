@@ -14,6 +14,7 @@
       :height="height"
       :loading="isLoading"
       :ripple="false"
+      :size="size"
       :type="type"
       :variant="variant"
       @click="emit('click')"
@@ -43,6 +44,12 @@ defineProps({
   type: {
     type: String as PropType<'reset' | 'submit' | 'button'>,
     default: 'button',
+  },
+  size: {
+    type: String as PropType<
+      'x-small' | 'small' | 'default' | 'large' | 'x-large'
+    >,
+    default: 'default',
   },
   height: { type: Number, default: undefined },
   isFullWidth: { type: Boolean, default: false },
