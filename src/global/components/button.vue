@@ -1,12 +1,5 @@
 <template>
-  <div
-    :class="[
-      'd-flex',
-      align === 'left' ? 'justify-start' : '',
-      align === 'center' ? 'justify-center' : '',
-      align === 'right' ? 'justify-end' : '',
-    ]"
-  >
+  <div :class="['d-flex', alignOptions[align]]">
     <v-btn
       :aria-disabled="isDisabled"
       :block="isFullWidth"
@@ -56,4 +49,10 @@ defineProps({
   isDisabled: { type: Boolean, default: false },
   isLoading: { type: Boolean, default: false },
 });
+
+const alignOptions = {
+  left: 'justify-start',
+  center: 'justify-center',
+  right: 'justify-end',
+};
 </script>

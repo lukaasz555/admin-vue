@@ -1,19 +1,19 @@
 <template>
-  <div class="auth--wrapper">
-    <div class="auth--wrapper__form--container">
+  <div class="auth">
+    <div class="auth__container">
       <router-view></router-view>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.auth--wrapper {
+.auth {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
 
-  &__form--container {
+  &__container {
     min-width: 250px;
     max-width: 400px;
     width: 100%;

@@ -1,5 +1,5 @@
 <template>
-  <div class="input--container">
+  <div>
     <v-text-field
       v-model="inputValue"
       :error-messages="errors"
