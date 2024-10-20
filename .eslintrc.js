@@ -24,5 +24,11 @@ module.exports = {
         printWidth: 70,
       },
     ],
+    'vue/multi-word-component-names': [
+      'error',
+      {
+        ignores: ['button', 'input'],
+      },
+    ],
   },
 };
