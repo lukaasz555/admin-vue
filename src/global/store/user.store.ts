@@ -27,5 +27,28 @@ export const useUserStore = defineStore('userStore', {
         JSON.stringify(this.user),
       );
     },
+    logout(): void {
+      this.$reset();
+      localStorage.removeItem(LocalStorage.STORE_TOKEN);
+      localStorage.removeItem(LocalStorage.STORE_USER);
+    },
+    getUserFromLS(): void {
+      try {
+        const token = localStorage.getItem(LocalStorage.STORE_TOKEN);
+        const user = localStorage.getItem(LocalStorage.STORE_USER);
+        if (token && user) {
+          this.token = token;
+          this.user = JSON.parse(user);
+        }
+      } catch (err) {
+        console.error(err);
+        this.$reset();
+      }
+    },
+  },
+  getters: {
+    isLoggedIn(): boolean {
+      return !!this.token && !!this.user;
+    },
   },
 });

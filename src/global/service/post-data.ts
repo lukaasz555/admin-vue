@@ -10,7 +10,6 @@ export async function postData<T, R = void>(
     const apiRes = await API.post<R>(url, {
       ...body,
     });
-    console.log('api res', apiRes);
     return apiRes.data;
   } catch (err) {
     const globalStore = useGlobalStore();
