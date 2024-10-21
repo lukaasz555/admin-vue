@@ -18,7 +18,7 @@
     max-width: 400px;
     width: 100%;
     padding: 1.5rem 1.5rem 0.75rem;
-    border: 1px solid $border-color;
+    border: 1px solid $color-border;
     border-radius: $border-radius-xl;
   }
 }
