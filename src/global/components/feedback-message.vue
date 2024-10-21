@@ -48,22 +48,20 @@ function getMessageClass(): string {
   margin: 1rem 0;
   padding: 0.75rem 1rem;
   width: 100%;
-  // TODO: replace with variables.scss after merge
-  /* border-radius: $border-radius-m; */
-  border-radius: 1rem;
+  border-radius: $border-radius-m;
   border: 2px solid transparent;
 
   &.message-success {
-    background-color: #6b9080;
+    background-color: $color-success;
   }
   &.message-error {
-    background-color: #e56b6f;
+    background-color: $color-error;
   }
   &.message-info {
-    background-color: #4062bb;
+    background-color: $color-info;
   }
   &.message-warning {
-    background-color: #d3b99f;
+    background-color: $color-warning;
   }
 }
 </style>
