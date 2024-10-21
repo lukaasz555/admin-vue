@@ -13,4 +13,12 @@ export class Message {
     message.timestamp = Date.now();
     return message;
   }
+
+  static getWarningMessage(): Message {
+    const message = new Message();
+    message.type = MessageType.WARNING;
+    message.title = 'Warning';
+    message.timestamp = Date.now();
+    return message;
+  }
 }
