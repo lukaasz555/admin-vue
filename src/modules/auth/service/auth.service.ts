@@ -1,11 +1,6 @@
 import { postData } from '@/global/service/post-data';
-
-// ! todo -> replace with loginData after merge
-type LoginData = {
-  email: string;
-  password: string;
-};
+import { LoginData } from '../viewModels/login-data';
 
 export async function login(loginData: LoginData): Promise<string> {
-  return await postData<LoginData, string>('auth/signin', loginData);
+  return postData<LoginData, string>('auth/signin', loginData);
 }
