@@ -1,5 +1,5 @@
 <template>
-  <LoginForm @confirm="handleLogin" />
+  <LoginForm :is-loading="isPending" @confirm="handleLogin" />
 </template>
 
 <script setup lang="ts">
@@ -9,14 +9,18 @@ import { useMutation } from '@tanstack/vue-query';
 import { login } from '../service/auth.service';
 import { useUserStore } from '@/global/store/user.store';
 import { DashboardRoutesNames } from '@/modules/dashboard/enums/dashboard-routes-names.enum';
+import { Message } from '@/global/models/message';
+import { useGlobalStore } from '@/global/store/global.store';
 import router from '@/plugins/router';
 
+const globalStore = useGlobalStore();
 const userStore = useUserStore();
 
-const mutation = useMutation({
+const { isPending, mutate } = useMutation({
   mutationFn: (data: LoginData) => login(data),
   onSuccess: (data) => {
     userStore.setUserWithToken(data);
+    handleLoginSuccess();
     router.push({
       name: DashboardRoutesNames.DASHBOARD,
     });
@@ -24,6 +28,12 @@ const mutation = useMutation({
 });
 
 async function handleLogin(loginData: LoginData): Promise<void> {
-  mutation.mutate(loginData);
+  mutate(loginData);
+}
+
+function handleLoginSuccess(): void {
+  const message = Message.getSuccessMessage();
+  message.content = 'Login successful';
+  globalStore.addMessage(message);
 }
 </script>

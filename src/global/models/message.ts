@@ -21,4 +21,12 @@ export class Message {
     message.timestamp = Date.now();
     return message;
   }
+
+  static getSuccessMessage(): Message {
+    const message = new Message();
+    message.type = MessageType.SUCCESS;
+    message.title = 'Success';
+    message.timestamp = Date.now();
+    return message;
+  }
 }
