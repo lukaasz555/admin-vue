@@ -19,7 +19,7 @@ export const useGlobalStore = defineStore('globalStore', {
       this.messages.push(message);
       setTimeout(() => {
         this.removeMessage(message.id);
-      }, 25000);
+      }, 5000);
     },
     removeMessage(messageId: number): void {
       this.messages = this.messages.filter((m) => m.id !== messageId);
