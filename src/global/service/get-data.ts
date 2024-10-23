@@ -1,6 +1,7 @@
 import { useGlobalStore } from '../store/global.store';
 import { API } from '../utils/axios';
 import { Message } from '../models/message';
+import { MessageType } from '../enums/message-type.enum';
 
 export async function getData<T, R = T>(
   url: string,
@@ -11,7 +12,7 @@ export async function getData<T, R = T>(
     return apiRes.data;
   } catch (err) {
     const globalStore = useGlobalStore();
-    const errorMsg = Message.getErrorMessage();
+    const errorMsg = Message.getMessage(MessageType.ERROR);
     errorMsg.content =
       err instanceof Error ? err.message : 'Something went wrong';
 

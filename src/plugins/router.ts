@@ -6,6 +6,7 @@ import { AuthRoutesNames } from '@/modules/auth/enums/auth-routes-names.enum';
 import { Message } from '@/global/models/message';
 import { useGlobalStore } from '@/global/store/global.store';
 import { DashboardRoutesNames } from '@/modules/dashboard/enums/dashboard-routes-names.enum';
+import { MessageType } from '@/global/enums/message-type.enum';
 
 const routes = [
   {
@@ -45,7 +46,7 @@ router.beforeEach((to, from, next) => {
       userStore.user.role,
     );
     if (!hasUserSufficientRole) {
-      const message = Message.getWarningMessage();
+      const message = Message.getMessage(MessageType.WARNING);
       message.content = 'Access denied';
       useGlobalStore().addMessage(message);
       next(false);

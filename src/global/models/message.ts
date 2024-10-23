@@ -1,32 +1,44 @@
 import { MessageType } from '../enums/message-type.enum';
+import { getUniqueId } from '../helpers/get-unique-id';
+
+function getMessageTitle(messageType: MessageType): string {
+  switch (messageType) {
+    case MessageType.ERROR:
+      return 'Error';
+    case MessageType.WARNING:
+      return 'Warning';
+    case MessageType.SUCCESS:
+      return 'Success';
+    default:
+      return 'Info';
+  }
+}
 
 export class Message {
   type = MessageType.INFO;
   title = '';
   content = '';
-  timestamp = Date.now();
+  id = 0;
 
-  static getErrorMessage(): Message {
-    const message = new Message();
-    message.type = MessageType.ERROR;
-    message.title = 'Error';
-    message.timestamp = Date.now();
-    return message;
+  getTitle(messageType: MessageType): string {
+    switch (messageType) {
+      case MessageType.ERROR:
+        return 'Error';
+      case MessageType.WARNING:
+        return 'Warning';
+      case MessageType.SUCCESS:
+        return 'Success';
+      default:
+        return 'Info';
+    }
   }
 
-  static getWarningMessage(): Message {
+  static getMessage(messageType: MessageType): Message {
     const message = new Message();
-    message.type = MessageType.WARNING;
-    message.title = 'Warning';
-    message.timestamp = Date.now();
-    return message;
-  }
+    message.type = messageType;
+    message.title = getMessageTitle(messageType);
+    message.id = getUniqueId();
 
-  static getSuccessMessage(): Message {
-    const message = new Message();
-    message.type = MessageType.SUCCESS;
-    message.title = 'Success';
-    message.timestamp = Date.now();
     return message;
   }
 }

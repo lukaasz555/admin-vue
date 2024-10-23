@@ -12,6 +12,7 @@ import { DashboardRoutesNames } from '@/modules/dashboard/enums/dashboard-routes
 import { Message } from '@/global/models/message';
 import { useGlobalStore } from '@/global/store/global.store';
 import router from '@/plugins/router';
+import { MessageType } from '@/global/enums/message-type.enum';
 
 const globalStore = useGlobalStore();
 const userStore = useUserStore();
@@ -32,7 +33,7 @@ async function handleLogin(loginData: LoginData): Promise<void> {
 }
 
 function handleLoginSuccess(): void {
-  const message = Message.getSuccessMessage();
+  const message = Message.getMessage(MessageType.SUCCESS);
   message.content = 'Login successful';
   globalStore.addMessage(message);
 }
