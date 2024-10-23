@@ -1,5 +1,5 @@
 <template>
-  <div class="message--container" :class="getMessageClass()">
+  <div class="message" :class="messageClass">
     <div class="d-flex items-center justify-space-between">
       <h3>{{ message.title }}</h3>
       <v-icon @click="closeMessage">mdi-close</v-icon>
@@ -24,43 +24,35 @@ const props = defineProps({
 const globalStore = useGlobalStore();
 
 function closeMessage(): void {
-  globalStore.removeMessage(props.message.timestamp);
+  globalStore.removeMessage(props.message.id);
 }
 
-function getMessageClass(): string {
-  switch (props.message.type) {
-    case MessageType.ERROR:
-      return 'message-error';
-    case MessageType.SUCCESS:
-      return 'message-success';
-    case MessageType.INFO:
-      return 'message-info';
-    case MessageType.WARNING:
-      return 'message-warning';
-    default:
-      return '';
-  }
-}
+const messageClass = computed(() => ({
+  'message--error': props.message.type === MessageType.ERROR,
+  'message--success': props.message.type === MessageType.SUCCESS,
+  'message--info': props.message.type === MessageType.INFO,
+  'message--warning': props.message.type === MessageType.WARNING,
+}));
 </script>
 
 <style scoped lang="scss">
-.message--container {
+.message {
   margin: 1rem 0;
   padding: 0.75rem 1rem;
   width: 100%;
   border-radius: $border-radius-m;
   border: 2px solid transparent;
 
-  &.message-success {
+  &--success {
     background-color: $color-success;
   }
-  &.message-error {
+  &--error {
     background-color: $color-error;
   }
-  &.message-info {
+  &--info {
     background-color: $color-info;
   }
-  &.message-warning {
+  &--warning {
     background-color: $color-warning;
   }
 }

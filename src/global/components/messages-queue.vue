@@ -5,8 +5,8 @@
     tag="div"
   >
     <FeedbackMessage
-      v-for="message in globalStore.messages"
-      :key="message.content + message.type + message.title"
+      v-for="message in globalStore.sortedMessages"
+      :key="message.id"
       :message="message"
     />
   </TransitionGroup>
@@ -29,7 +29,7 @@ const globalStore = useGlobalStore();
   max-width: 450px;
   width: 100%;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -38,23 +38,15 @@ const globalStore = useGlobalStore();
   transition: all 0.5s ease;
 }
 
-.messages-queue-enter-from {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-.messages-queue-enter-to {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.messages-queue-leave-from {
-  opacity: 1;
-  transform: translateY(0);
-}
-
+.messages-queue-enter-from,
 .messages-queue-leave-to {
   opacity: 0;
   transform: translateY(20px);
+}
+
+.messages-queue-enter-to,
+.messages-queue-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
