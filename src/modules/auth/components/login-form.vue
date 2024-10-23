@@ -15,6 +15,7 @@
       <Button
         class="mt-5"
         :is-disabled="!isValid"
+        :is-loading="isLoading"
         :label="$t('Login')"
         type="submit"
       />
@@ -42,6 +43,10 @@ import { AuthRoutesNames } from '../enums/auth-routes-names.enum';
 const emit = defineEmits<{
   (e: 'confirm', loginData: LoginData): void;
 }>();
+
+defineProps({
+  isLoading: { type: Boolean, default: false },
+});
 
 const loginData = ref(new LoginData());
 const { isValid, getError } = useValidation(loginSchema, loginData);
