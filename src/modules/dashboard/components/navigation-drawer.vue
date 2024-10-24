@@ -4,15 +4,7 @@
     v-model="isDrawerVisible"
     temporary
   >
-    <v-list-item
-      subtitle="Vuetify"
-      title="My Application"
-    ></v-list-item>
-    <v-divider></v-divider>
-    <v-list-item link title="List Item 1"></v-list-item>
-    <v-list-item link title="List Item 2"></v-list-item>
-    <v-list-item link title="List Item 3"></v-list-item>
-
+    <DrawerNavigationMenuItems />
     <v-divider></v-divider>
     <Button
       is-full-width
@@ -24,9 +16,10 @@
 
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
-import Button from '@/global/components/button.vue';
 import { useUserStore } from '@/global/store/user.store';
 import { useDialog } from '@/global/composables/useDialog';
+import DrawerNavigationMenuItems from './drawer-navigation-menu-items.vue';
+import Button from '@/global/components/button.vue';
 
 const emit = defineEmits<{
   (e: 'update:isOpen', value: boolean): void;

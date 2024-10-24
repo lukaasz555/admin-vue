@@ -21,16 +21,14 @@ import NavigationDrawer from './components/navigation-drawer.vue';
 import ConfirmationDialog from './components/confirmation-dialog.vue';
 
 const isDrawerVisible = ref(false);
-
-function toggleDrawerVisibility() {
-  console.log('toggleDrawerVisibility invoked');
-  isDrawerVisible.value = !isDrawerVisible.value;
-}
-
 const { isVisible, closeDialog, onConfirm } = useDialog();
 
 function confirmDialog() {
   onConfirm.value();
   closeDialog();
+}
+
+function toggleDrawerVisibility() {
+  isDrawerVisible.value = !isDrawerVisible.value;
 }
 </script>
