@@ -1,4 +1,5 @@
 {
     "Login successful": "Zalogowano pomyślnie",
-    "Access denied": "Brak dostępu"
+    "Access denied": "Brak dostępu",
+    "Logout": "Wyloguj"
 }

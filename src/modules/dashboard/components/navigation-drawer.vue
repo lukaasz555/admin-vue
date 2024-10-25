@@ -6,6 +6,7 @@
   >
     <DrawerNavigationMenuItems />
     <v-divider></v-divider>
+    <LanguageChooser />
     <Button
       is-full-width
       :label="$t('Logout')"
@@ -19,6 +20,7 @@ import { onClickOutside } from '@vueuse/core';
 import { useUserStore } from '@/global/store/user.store';
 import { useDialog } from '@/global/composables/useDialog';
 import DrawerNavigationMenuItems from './drawer-navigation-menu-items.vue';
+import LanguageChooser from '@/global/components/language-chooser.vue';
 import Button from '@/global/components/button.vue';
 
 const emit = defineEmits<{
