@@ -2,8 +2,8 @@
   <div>
     <v-text-field
       v-model="inputValue"
-      :error-messages="errors"
       :label="label"
+      :rules="rules"
       :type="type"
       variant="outlined"
     ></v-text-field>
@@ -34,8 +34,8 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  errors: {
-    type: Array as PropType<string[] | undefined>,
+  rules: {
+    type: Array as PropType<((v: string) => true | string)[]>,
     default: () => [],
   },
 });
