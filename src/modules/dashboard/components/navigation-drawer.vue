@@ -7,11 +7,7 @@
     <DrawerNavigationMenuItems />
     <v-divider></v-divider>
     <LanguageChooser />
-    <Button
-      is-full-width
-      :label="$t('Logout')"
-      @click="handleLogout"
-    />
+    <Button :label="$t('Logout')" @click="handleLogout" />
   </v-navigation-drawer>
 </template>
 

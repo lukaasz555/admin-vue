@@ -36,15 +36,8 @@ function setLang(languageChooserItem: SelectItemType): void {
 
 onMounted(() => {
   const langInLS = localStorage.getItem(LocalStorage.STORE_LANGUAGE);
-  if (!langInLS) {
+  if (langInLS) {
     selectedLanguage.value = languageChooserItems[0];
-  } else {
-    const lang = languageChooserItems.find(
-      (item) => item.value === langInLS,
-    );
-    if (lang) {
-      selectedLanguage.value = lang;
-    }
   }
 });
 </script>
