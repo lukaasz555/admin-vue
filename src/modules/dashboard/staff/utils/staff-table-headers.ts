@@ -11,7 +11,7 @@ export const staffTableHeaders: TableHeader<StaffMember>[] = [
       `${staffMember.name} ${staffMember.lastname}`,
   },
   {
-    align: 'start',
+    align: 'end',
     key: 'role',
     title: 'Role',
   },
