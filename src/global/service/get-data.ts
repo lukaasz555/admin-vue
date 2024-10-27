@@ -1,7 +1,5 @@
-import { useGlobalStore } from '../store/global.store';
 import { API } from '../utils/axios';
-import { Message } from '../models/message';
-import { MessageType } from '../enums/message-type.enum';
+import { handleApiError } from '../helpers/handle-api-error';
 
 export async function getData<T, R = T>(
   url: string,
@@ -11,13 +9,6 @@ export async function getData<T, R = T>(
     const apiRes = await API.get<R>(url, { params });
     return apiRes.data;
   } catch (err) {
-    const globalStore = useGlobalStore();
-    const errorMsg = Message.getMessage(MessageType.ERROR);
-    errorMsg.content =
-      err instanceof Error ? err.message : 'Something went wrong';
-
-    globalStore.addMessage(errorMsg);
-    console.error(err);
-    throw err;
+    return handleApiError<R>(err);
   }
 }
