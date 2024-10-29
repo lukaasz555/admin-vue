@@ -4,7 +4,7 @@
     :is-open="isDrawerVisible"
     @update:is-open="isDrawerVisible = $event"
   />
-  <div class="main-view--container">
+  <div class="js-main-view">
     <router-view />
   </div>
   <ConfirmationDialog

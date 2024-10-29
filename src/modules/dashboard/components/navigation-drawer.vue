@@ -39,7 +39,7 @@ onClickOutside(navigationDrawer, (e: MouseEvent) => {
   if (!e.target) return;
 
   const target = e.target as HTMLElement;
-  const isMainViewClicked = !!target.closest('.main-view--container');
+  const isMainViewClicked = !!target.closest('.js-main-view');
   if (isMainViewClicked) {
     emit('update:isOpen', false);
   }

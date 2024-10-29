@@ -2,5 +2,6 @@
     "Login successful": "Login successful",
     "Access denied": "Access denied",
     "Logout": "Logout",
-    "Language": "Language"
+    "Language": "Language",
+    "Are you sure you want to logout?": "Are you sure you want to logout?"
 }

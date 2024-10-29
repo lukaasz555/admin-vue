@@ -1,20 +1,20 @@
 <template>
   <v-dialog v-model="isDialogVisible">
     <div class="container">
-      <section class="container--header">
+      <header>
         <h2>{{ title }}</h2>
-      </section>
-      <section class="container--content">
+      </header>
+      <section>
         <p>{{ message }}</p>
       </section>
-      <section class="container--footer">
+      <footer>
         <Button :label="$t('Confirm')" @click="emit('confirm')" />
         <Button
           :label="$t('Cancel')"
           variant="outlined"
           @click="emit('close')"
         />
-      </section>
+      </footer>
     </div>
   </v-dialog>
 </template>
@@ -49,9 +49,9 @@ const { title, message } = useDialog();
   row-gap: 20px;
   border-radius: $border-radius-l;
   padding: 1rem;
-  background-color: #1e1e1e;
+  background-color: $color-background;
 
-  &--footer {
+  footer {
     display: flex;
     justify-content: center;
     column-gap: 20px;

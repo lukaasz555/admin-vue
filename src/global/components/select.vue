@@ -14,9 +14,11 @@
 import { PropType } from 'vue';
 import { SelectItemType } from '../types/select-item.type';
 
-const emit = defineEmits<{
+type EmitProps = {
   (e: 'update:modelValue', item: SelectItemType): void;
-}>();
+};
+
+const emit = defineEmits<EmitProps>();
 
 const props = defineProps({
   modelValue: {
