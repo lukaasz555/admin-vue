@@ -1,4 +1,7 @@
 {
     "Login successful": "Zalogowano pomyślnie",
-    "Access denied": "Brak dostępu"
+    "Access denied": "Brak dostępu",
+    "Logout": "Wyloguj",
+    "Language": "Język",
+    "Are you sure you want to logout?": "Czy na pewno chcesz się wylogować?"
 }
