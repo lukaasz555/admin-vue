@@ -12,6 +12,7 @@
 		"@stylistic/eslint-plugin-js": "^2.9.0",
 		"@tanstack/vue-query": "^5.59.13",
 		"@types/lodash-es": "^4.17.12",
+		"@vueuse/core": "^11.1.0",
 		"axios": "^1.7.7",
 		"class-transformer": "^0.5.1",
 		"core-js": "^3.37.1",

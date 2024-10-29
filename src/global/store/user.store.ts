@@ -2,6 +2,8 @@ import { defineStore } from 'pinia';
 import { IUserPayload } from '../interfaces/user-payload';
 import { getUserPayloadFromToken } from '../helpers/get-user-payload-from-token';
 import { LocalStorage } from '../enums/local-storage.enum';
+import { AuthRoutesNames } from '@/modules/auth/enums/auth-routes-names.enum';
+import router from '@/plugins/router';
 
 interface UserStoreState {
   token: string;
@@ -31,6 +33,7 @@ export const useUserStore = defineStore('userStore', {
       this.$reset();
       localStorage.removeItem(LocalStorage.STORE_TOKEN);
       localStorage.removeItem(LocalStorage.STORE_USER);
+      router.push({ name: AuthRoutesNames.LOGIN });
     },
     getUserFromLS(): void {
       try {
