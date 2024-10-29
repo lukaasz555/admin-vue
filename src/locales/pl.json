@@ -3,5 +3,9 @@
     "Access denied": "Brak dostępu",
     "Logout": "Wyloguj",
     "Language": "Język",
-    "Are you sure you want to logout?": "Czy na pewno chcesz się wylogować?"
+    "Are you sure you want to logout?": "Czy na pewno chcesz się wylogować?",
+    "Dashboard": "Panel",
+    "Products": "Produkty",
+    "Staff": "Personel",
+    "Categories": "Kategorie"
 }

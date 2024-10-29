@@ -3,5 +3,9 @@
     "Access denied": "Access denied",
     "Logout": "Logout",
     "Language": "Language",
-    "Are you sure you want to logout?": "Are you sure you want to logout?"
+    "Are you sure you want to logout?": "Are you sure you want to logout?",
+    "Dashboard": "Dashboard",
+    "Products": "Products",
+    "Staff": "Staff",
+    "Categories": "Categories"
 }
