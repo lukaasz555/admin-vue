@@ -1,5 +1,15 @@
 import { ref } from 'vue';
 import { DialogTypeEnum } from '../enums/dialog-type.enum';
+import { TranslateResult } from 'vue-i18n';
+
+export interface IDialogOptions {
+  title: TranslateResult;
+  message: TranslateResult;
+  onConfirm: () => void;
+  type?: DialogTypeEnum;
+  confirmButtonText?: TranslateResult;
+  cancelButtonText?: TranslateResult;
+}
 
 const isVisible = ref(false);
 const title = ref('');
@@ -8,17 +18,12 @@ const onConfirm = ref<() => void>(() => {});
 const dialogType = ref(DialogTypeEnum.DEFAULT);
 
 export const useDialog = () => {
-  function openDialog(
-    dialogTitle: string,
-    dialogMessage: string,
-    onDialogConfirm: () => void,
-    type = DialogTypeEnum.DEFAULT,
-  ): void {
-    title.value = dialogTitle;
-    message.value = dialogMessage;
+  function openDialog(options: IDialogOptions): void {
+    title.value = options.title;
+    message.value = options.message;
+    onConfirm.value = options.onConfirm;
+    dialogType.value = options.type || DialogTypeEnum.DEFAULT;
     isVisible.value = true;
-    onConfirm.value = onDialogConfirm;
-    dialogType.value = type;
   }
 
   const closeDialog = () => {
