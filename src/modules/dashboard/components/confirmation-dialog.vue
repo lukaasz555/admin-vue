@@ -8,7 +8,11 @@
         <p>{{ message }}</p>
       </section>
       <footer>
-        <Button :label="$t('Confirm')" @click="emit('confirm')" />
+        <Button
+          :label="$t('Confirm')"
+          :role="buttonRole"
+          @click="emit('confirm')"
+        />
         <Button
           :label="$t('Cancel')"
           variant="outlined"
@@ -23,6 +27,7 @@
 import { computed } from 'vue';
 import { useDialog } from '@/global/composables/useDialog';
 import Button from '@/global/components/button.vue';
+import { DialogTypeEnum } from '@/global/enums/dialog-type.enum';
 
 const emit = defineEmits<{
   (e: 'confirm'): void;
@@ -33,12 +38,16 @@ const props = defineProps({
   isDialogVisible: { type: Boolean, default: false },
 });
 
+const { title, message, dialogType } = useDialog();
+
+const buttonRole = computed(() =>
+  dialogType.value === DialogTypeEnum.DELETE ? 'delete' : 'default',
+);
+
 const isDialogVisible = computed({
   get: () => props.isDialogVisible,
   set: () => emit('close'),
 });
-
-const { title, message } = useDialog();
 </script>
 
 <style scoped lang="scss">

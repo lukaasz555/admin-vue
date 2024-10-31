@@ -13,10 +13,13 @@ import {
   getStaffMembers,
 } from './service/staff.service';
 import { useStaffStore } from './staff.store';
-import Loader from '../components/loader.vue';
 import { useGlobalStore } from '@/global/store/global.store';
-import { Message } from '@/global/models/message';
 import { MessageType } from '@/global/enums/message-type.enum';
+import { useDialog } from '@/global/composables/useDialog';
+import { Message } from '@/global/models/message';
+import Loader from '../components/loader.vue';
+import i18n from '@/plugins/i18n';
+import { DialogTypeEnum } from '@/global/enums/dialog-type.enum';
 
 const globalStore = useGlobalStore();
 const staffStore = useStaffStore();
@@ -34,13 +37,26 @@ const { isPending, mutate } = useMutation({
   mutationFn: (staffId: number) => deleteMember(staffId),
   onSuccess: async () => {
     const message = Message.getMessage(MessageType.SUCCESS);
-    message.content = 'Staff member deleted';
+    message.content = i18n.global.t('Staff member deleted');
     globalStore.addMessage(message);
     staffStore.staffMembers = await getStaffMembers();
   },
 });
 
+const deleteDialogData = {
+  title: i18n.global.t('Delete staff member'),
+  message: i18n.global.t(
+    'Are you sure you want to delete this staff member?',
+  ),
+};
+
 function deleteStaffHandler(staffId: number): void {
-  mutate(staffId);
+  const { openDialog } = useDialog();
+  openDialog(
+    deleteDialogData.title,
+    deleteDialogData.message,
+    () => mutate(staffId),
+    DialogTypeEnum.DELETE,
+  );
 }
 </script>

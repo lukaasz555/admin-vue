@@ -24,10 +24,11 @@ const emit = defineEmits<{
   (e: 'deleteStaff', staffId: number): void;
 }>();
 
-function onEditClick(staffId: number): void {}
+function onEditClick(staffId: number): void {
+  // TODO: KF-7
+}
 
 function onDeleteClick(staffId: number): void {
-  // TODO: add dialog after merge KF-5
   emit('deleteStaff', staffId);
 }
 </script>
