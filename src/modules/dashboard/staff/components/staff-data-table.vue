@@ -18,14 +18,18 @@ import { useStaffStore } from '../staff.store';
 import { staffTableHeaders } from '../utils/staff-table-headers';
 import TableActionButtons from '../../components/table-action-buttons.vue';
 
-const staffStore = useStaffStore();
-
-const emit = defineEmits<{
+type StaffDataTableEmits = {
   (e: 'deleteStaff', staffId: number): void;
-}>();
+  (e: 'editStaff', staffId: number): void;
+};
+
+const emit = defineEmits<StaffDataTableEmits>();
+
+const staffStore = useStaffStore();
 
 function onEditClick(staffId: number): void {
   // TODO: KF-7
+  emit('editStaff', staffId);
 }
 
 function onDeleteClick(staffId: number): void {

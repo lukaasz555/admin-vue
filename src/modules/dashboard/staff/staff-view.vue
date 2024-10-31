@@ -1,8 +1,18 @@
 <template>
   <div>
-    <StaffDataTable @delete-staff="deleteStaffHandler" />
+    <StaffDataTable
+      @delete-staff="deleteStaffHandler"
+      @edit-staff="editStaffHandler"
+    />
   </div>
   <Loader :is-loading="isLoading || isPending" />
+  <Popup
+    v-model="isStaffEditVisible"
+    :title="$t('Edit staff')"
+    @close="isStaffEditVisible = false"
+  >
+    <StaffPopup />
+  </Popup>
 </template>
 
 <script setup lang="ts">
@@ -19,13 +29,16 @@ import {
   IDialogOptions,
   useDialog,
 } from '@/global/composables/useDialog';
-import { Message } from '@/global/models/message';
-import Loader from '../components/loader.vue';
-import i18n from '@/plugins/i18n';
 import { DialogTypeEnum } from '@/global/enums/dialog-type.enum';
+import { Message } from '@/global/models/message';
+import StaffPopup from './components/staff-popup.vue';
+import Loader from '../components/loader.vue';
+import Popup from '@/global/components/popup.vue';
+import i18n from '@/plugins/i18n';
 
 const globalStore = useGlobalStore();
 const staffStore = useStaffStore();
+const isStaffEditVisible = ref(false);
 
 const { isLoading } = useQuery({
   queryKey: ['getStaffMembers'],
@@ -45,6 +58,11 @@ const { isPending, mutate } = useMutation({
     staffStore.staffMembers = await getStaffMembers();
   },
 });
+
+function editStaffHandler(staffId: number): void {
+  isStaffEditVisible.value = true;
+  console.log('staffId = ', staffId);
+}
 
 function deleteStaffHandler(staffId: number): void {
   const { openDialog } = useDialog();
