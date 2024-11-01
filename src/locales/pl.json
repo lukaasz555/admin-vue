@@ -3,5 +3,15 @@
     "Access denied": "Brak dostępu",
     "Logout": "Wyloguj",
     "Language": "Język",
-    "Are you sure you want to logout?": "Czy na pewno chcesz się wylogować?"
+    "Are you sure you want to logout?": "Czy na pewno chcesz się wylogować?",
+    "Required field": "Pole wymagane",
+    "Phone number must have 9 digits": "Numer telefonu musi składać się z 9 cyfr",
+    "Invalid email address": "Nieprawidłowy adres e-mail",
+    "Email": "Email",
+    "Password": "Hasło",
+    "Phone number": "Numer telefonu",
+    "Phone": "Telefon",
+    "Name": "Imię",
+    "Last name": "Nazwisko",
+    "Add": "Dodaj"
 }

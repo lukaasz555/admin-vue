@@ -3,5 +3,15 @@
     "Access denied": "Access denied",
     "Logout": "Logout",
     "Language": "Language",
-    "Are you sure you want to logout?": "Are you sure you want to logout?"
+    "Are you sure you want to logout?": "Are you sure you want to logout?",
+    "Required field": "Required field",
+    "Phone number must have 9 digits": "Phone number must have 9 digits",
+    "Invalid email address": "Invalid email address",
+    "Email": "Email",
+    "Password": "Password",
+    "Phone number": "Phone number",
+    "Phone": "Phone",
+    "Name": "Name",
+    "Last name": "Last name",
+    "Add": "Add"
 }
