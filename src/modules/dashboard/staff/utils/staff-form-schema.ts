@@ -8,5 +8,4 @@ export const staffSchema = z.object({
   phoneNumber: z
     .string()
     .length(9, i18n.global.t('Phone number must have 9 digits')),
-  role: z.string().min(1, i18n.global.t('Required field')),
 });
