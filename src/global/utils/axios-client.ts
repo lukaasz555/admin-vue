@@ -31,6 +31,15 @@ export class AxiosClient extends ApiClient {
     }
   }
 
+  async patchData<T, R = void>(url: string, body: T): Promise<R> {
+    try {
+      const apiRes = await this.#api.patch<R>(url, { ...body });
+      return apiRes.data;
+    } catch (err) {
+      return this.handleApiError(err);
+    }
+  }
+
   handleApiError<R>(err: unknown): R {
     const globalStore = useGlobalStore();
     const errorMessage = Message.getMessage(MessageType.ERROR);

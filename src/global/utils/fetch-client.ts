@@ -23,6 +23,31 @@ export class FetchClient extends ApiClient {
     }
   }
 
+  async patchData<T, R = void>(url: string, body: T): Promise<R> {
+    try {
+      const apiRes = await fetch(`${this.baseURL}${url}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
+
+      const textData = await apiRes.text();
+      let responseData;
+
+      try {
+        responseData = JSON.parse(textData);
+      } catch (err) {
+        responseData = textData;
+      }
+
+      return responseData as R;
+    } catch (err) {
+      return this.handleApiError(err);
+    }
+  }
+
   async postData<T, R = void>(url: string, body: T): Promise<R> {
     try {
       const apiRes = await fetch(`${this.baseURL}${url}`, {
