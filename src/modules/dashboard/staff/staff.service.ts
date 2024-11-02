@@ -12,10 +12,7 @@ class StaffService implements IHttpService {
     this.httpClient = httpClient;
   }
 
-  async editStaff(
-    staffId: string,
-    staffData: StaffData,
-  ): Promise<void> {
+  async editStaff(staffData: StaffData): Promise<void> {
     // TODO: Implement this method (API side)
   }
 

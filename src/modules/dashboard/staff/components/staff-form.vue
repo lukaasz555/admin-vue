@@ -27,24 +27,14 @@
 <script setup lang="ts">
 import { StaffData } from '../models/staff-data';
 import { staffSchema } from '../utils/staff-form-schema';
-import { PropType } from 'vue';
-import { ActionType } from '../../enums/action-type.enum';
 import Button from '@/global/components/button.vue';
 import Input from '@/global/components/input.vue';
 
 type StaffFormEmits = {
-  (e: 'add', staffData: StaffData): void;
-  (e: 'edit', staffData: StaffData): void;
+  (e: 'confirm', staffData: StaffData): void;
 };
 
 const emit = defineEmits<StaffFormEmits>();
-
-const props = defineProps({
-  formActionType: {
-    type: String as PropType<ActionType>,
-    required: true,
-  },
-});
 
 const staffData = ref(new StaffData());
 const errors = ref<Record<string, string>>({});
@@ -53,9 +43,7 @@ const handleConfirm = () => {
   const isValidForm = validateForm();
   if (!isValidForm) return;
 
-  props.formActionType === ActionType.ADD
-    ? emit('add', staffData.value)
-    : emit('edit', staffData.value);
+  emit('confirm', staffData.value);
 };
 
 function validateForm(): boolean {
