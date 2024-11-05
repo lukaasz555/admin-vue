@@ -3,6 +3,7 @@
     <v-btn
       :aria-disabled="isDisabled"
       :block="isFullWidth"
+      :class="['btn', roleOptions[role]]"
       :disabled="isDisabled"
       :height="height"
       :loading="isLoading"
@@ -20,9 +21,11 @@
 <script setup lang="ts">
 import { PropType } from 'vue';
 
-const emit = defineEmits<{
+type ButtonEmits = {
   (e: 'click'): void;
-}>();
+};
+
+const emit = defineEmits<ButtonEmits>();
 
 defineProps({
   label: { type: String, default: 'Save' },
@@ -48,6 +51,10 @@ defineProps({
   isFullWidth: { type: Boolean, default: false },
   isDisabled: { type: Boolean, default: false },
   isLoading: { type: Boolean, default: false },
+  role: {
+    type: String as PropType<'default' | 'delete'>,
+    default: '',
+  },
 });
 
 const alignOptions = {
@@ -55,4 +62,17 @@ const alignOptions = {
   center: 'justify-center',
   right: 'justify-end',
 };
+
+const roleOptions = {
+  default: '',
+  delete: 'btn-role--delete',
+};
 </script>
+
+<style scoped lang="scss">
+.btn {
+  &-role--delete {
+    background-color: $color-error;
+  }
+}
+</style>

@@ -1,73 +1,82 @@
 <template>
   <div>
-    <!-- Temp. here - move to popup after KF-6 merge -->
-    <StaffForm
-      :form-action-type="staffFormAction"
-      @confirm="onConfirm"
+    <StaffDataTable
+      @delete-staff="deleteStaffHandler"
+      @edit-staff="editStaffHandler"
     />
   </div>
+  <Loader :is-loading="isLoading || isPending" />
+  <Popup
+    v-model="isStaffEditVisible"
+    :title="$t('Edit staff')"
+    @close="isStaffEditVisible = false"
+  >
+    <StaffPopup />
+  </Popup>
 </template>
 
 <script setup lang="ts">
-import { ActionType } from '../enums/action-type.enum';
-import { StaffData } from './models/staff-data';
-import { useMutation } from '@tanstack/vue-query';
-import { Message } from '@/global/models/message';
-import { MessageType } from '@/global/enums/message-type.enum';
+import { useMutation, useQuery } from '@tanstack/vue-query';
+import StaffDataTable from './components/staff-data-table.vue';
+import {
+  deleteMember,
+  getStaffMembers,
+} from './service/staff.service';
+import { useStaffStore } from './staff.store';
 import { useGlobalStore } from '@/global/store/global.store';
-import { TranslateResult } from 'vue-i18n';
-import { staffService } from './staff.service';
-import StaffForm from './components/staff-form.vue';
+import { MessageType } from '@/global/enums/message-type.enum';
+import {
+  IDialogOptions,
+  useDialog,
+} from '@/global/composables/useDialog';
+import { DialogTypeEnum } from '@/global/enums/dialog-type.enum';
+import { Message } from '@/global/models/message';
+import StaffPopup from './components/staff-popup.vue';
+import Loader from '../components/loader.vue';
+import Popup from '@/global/components/popup.vue';
 import i18n from '@/plugins/i18n';
 
 const globalStore = useGlobalStore();
+const staffStore = useStaffStore();
+const isStaffEditVisible = ref(false);
 
-const staffFormAction = ref(ActionType.ADD);
-
-function openEditForm(): void {
-  staffFormAction.value = ActionType.EDIT;
-}
-
-function openAddForm(): void {
-  staffFormAction.value = ActionType.ADD;
-}
-
-function onConfirm(staffData: StaffData): void {
-  mutate(staffData);
-}
-
-const { isPending, mutate } = useMutation({
-  mutationFn: (data: StaffData) =>
-    staffFormActionDetails.value.handler(data),
-  onSuccess: () => {
-    const message = Message.getMessage(MessageType.SUCCESS);
-    message.content = staffFormActionDetails.value.successMessage;
-    globalStore.addMessage(message);
+const { isLoading } = useQuery({
+  queryKey: ['getStaffMembers'],
+  queryFn: async () => {
+    const res = await getStaffMembers();
+    staffStore.staffMembers = res;
+    return res;
   },
 });
 
-type StaffFormActionDetails = {
-  handler: (staffData: StaffData) => Promise<void>;
-  successMessage: TranslateResult;
-};
-
-const staffFormActionDetails = computed<StaffFormActionDetails>(
-  () => {
-    if (staffFormAction.value === ActionType.ADD) {
-      return {
-        handler: staffService.createStaff,
-        successMessage: i18n.global.t(
-          'Staff member added successfully',
-        ),
-      };
-    } else {
-      return {
-        handler: staffService.editStaff,
-        successMessage: i18n.global.t(
-          'Staff member updated successfully',
-        ),
-      };
-    }
+const { isPending, mutate } = useMutation({
+  mutationFn: (staffId: number) => deleteMember(staffId),
+  onSuccess: async () => {
+    const message = Message.getMessage(MessageType.SUCCESS);
+    message.content = i18n.global.t('Staff member deleted');
+    globalStore.addMessage(message);
+    staffStore.staffMembers = await getStaffMembers();
   },
-);
+});
+
+function editStaffHandler(staffId: number): void {
+  isStaffEditVisible.value = true;
+  console.log('staffId = ', staffId);
+}
+
+function deleteStaffHandler(staffId: number): void {
+  const { openDialog } = useDialog();
+
+  const dialogOptions: IDialogOptions = {
+    title: i18n.global.t('Delete staff member'),
+    message: i18n.global.t(
+      'Are you sure you want to delete this staff member?',
+    ),
+    onConfirm: () => mutate(staffId),
+    type: DialogTypeEnum.DELETE,
+    confirmButtonText: i18n.global.t('Delete'),
+  };
+
+  openDialog(dialogOptions);
+}
 </script>

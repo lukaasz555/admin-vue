@@ -1,5 +1,9 @@
 <template>
-  <v-list-item link :title="item.title" @click="handleNavigation" />
+  <v-list-item
+    link
+    :title="`${$t(item.title)}`"
+    @click="handleNavigation"
+  />
 </template>
 
 <script setup lang="ts">

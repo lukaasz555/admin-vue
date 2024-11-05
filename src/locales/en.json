@@ -14,5 +14,12 @@
     "Name": "Name",
     "Last name": "Last name",
     "Add": "Add",
-    "Something went wrong": "Something went wrong"
+    "Something went wrong": "Something went wrong",
+    "Dashboard": "Dashboard",
+    "Products": "Products",
+    "Staff": "Staff",
+    "Categories": "Categories",
+    "Staff member deleted": "Staff member deleted",
+    "Delete staff member": "Delete staff member",
+    "Are you sure you want to delete this staff member?": "Are you sure you want to delete this staff member?"
 }

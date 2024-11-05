@@ -10,6 +10,7 @@
 <script setup lang="ts">
 import { Language } from '../enums/language.enum';
 import { LocalStorage } from '../enums/local-storage.enum';
+import { setLanguageFromLS } from '../helpers/set-language-from-ls';
 import { SelectItemType } from '../types/select-item.type';
 import Select from './select.vue';
 
@@ -32,12 +33,16 @@ function setLang(languageChooserItem: SelectItemType): void {
     LocalStorage.STORE_LANGUAGE,
     String(languageChooserItem.value),
   );
+  setLanguageFromLS();
 }
 
 onMounted(() => {
   const langInLS = localStorage.getItem(LocalStorage.STORE_LANGUAGE);
   if (langInLS) {
-    selectedLanguage.value = languageChooserItems[0];
+    const lang = languageChooserItems.find(
+      (item) => item.value === langInLS,
+    );
+    if (lang) selectedLanguage.value = lang;
   }
 });
 </script>
