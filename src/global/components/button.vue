@@ -65,13 +65,13 @@ const alignOptions = {
 
 const roleOptions = {
   default: '',
-  delete: 'delete',
+  delete: 'btn-role--delete',
 };
 </script>
 
 <style scoped lang="scss">
 .btn {
-  &.delete {
+  &-role--delete {
     background-color: $color-error;
   }
 }

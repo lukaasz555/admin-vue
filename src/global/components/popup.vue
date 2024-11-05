@@ -1,11 +1,16 @@
 <template>
-  <v-dialog v-model="isPopupVisible">
-    <section>
-      <header>
-        <h2>{{ title }}</h2>
-        <v-icon @click="emit('close')">mdi-close</v-icon>
+  <v-dialog v-model="isPopupVisible" class="dialog">
+    <section class="dialog__section">
+      <header class="dialog__header">
+        <h2 class="dialog__header--title">{{ title }}</h2>
+        <v-icon
+          class="dialog__header--close-icon"
+          :size="26"
+          @click="emit('close')"
+          >mdi-close</v-icon
+        >
       </header>
-      <div class="content">
+      <div class="dialog__content">
         <slot />
       </div>
     </section>
@@ -36,23 +41,23 @@ const isPopupVisible = computed({
 </script>
 
 <style lang="scss" scoped>
-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  row-gap: 20px;
-  border-radius: $border-radius-l;
-  padding: 1rem;
-  background-color: $color-background;
-
-  header {
+.dialog {
+  &__section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 20px;
+    border-radius: $border-radius-l;
+    padding: 1rem;
+    background-color: $color-background;
+  }
+  &__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
   }
-
-  .content {
+  &__content {
     width: 100%;
   }
 }

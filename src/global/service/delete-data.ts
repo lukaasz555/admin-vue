@@ -6,7 +6,7 @@ export async function deleteData<T = undefined>(
   body?: T,
 ): Promise<void> {
   try {
-    await API.delete<void>(url, {
+    await API.delete(url, {
       ...body,
     });
   } catch (err) {

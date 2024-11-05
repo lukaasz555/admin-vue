@@ -41,7 +41,9 @@ const props = defineProps({
 const { title, message, dialogType } = useDialog();
 
 const buttonRole = computed(() =>
-  dialogType.value === DialogTypeEnum.DELETE ? 'delete' : 'default',
+  dialogType.value === DialogTypeEnum.DELETE
+    ? DialogTypeEnum.DELETE
+    : DialogTypeEnum.DEFAULT,
 );
 
 const isDialogVisible = computed({
