@@ -1,17 +1,28 @@
 <template>
-  <div>
-    <StaffDataTable
-      @delete-staff="deleteStaffHandler"
-      @edit-staff="editStaffHandler"
-    />
-  </div>
+  <ActionBar
+    :search-query="searchQuery"
+    @add-staff="addStaffHandler"
+    @update="updateSearchQuery"
+  />
+  <StaffDataTable
+    :staff-members="filteredStaffMembers"
+    @delete-staff="deleteStaffHandler"
+    @edit-staff="editStaffHandler"
+  />
   <Loader :is-loading="isLoading || isPending" />
   <Popup
-    v-model="isStaffEditVisible"
-    :title="$t('Edit staff')"
-    @close="isStaffEditVisible = false"
+    v-model="isStaffFormVisible"
+    :title="
+      popupType === ActionType.EDIT
+        ? $t('Edit staff')
+        : $t('Add staff')
+    "
+    @close="isStaffFormVisible = false"
   >
-    <StaffPopup />
+    <StaffPopup
+      :action-type="popupType"
+      :staff-id="selectedStaffId"
+    />
   </Popup>
 </template>
 
@@ -28,20 +39,27 @@ import {
 import { DialogTypeEnum } from '@/global/enums/dialog-type.enum';
 import { Message } from '@/global/models/message';
 import { staffService } from './service/staff.service';
+import { ActionType } from '../enums/action-type.enum';
 import StaffPopup from './components/staff-popup.vue';
 import Loader from '../components/loader.vue';
 import Popup from '@/global/components/popup.vue';
 import i18n from '@/plugins/i18n';
+import ActionBar from './components/action-bar.vue';
+import Fuse from 'fuse.js';
 
 const globalStore = useGlobalStore();
 const staffStore = useStaffStore();
-const isStaffEditVisible = ref(false);
+const isStaffFormVisible = ref(false);
+const selectedStaffId = ref(0);
+const popupType = ref(ActionType.ADD);
+const searchQuery = ref('');
 
 const { isLoading } = useQuery({
   queryKey: ['getStaffMembers'],
   queryFn: async () => {
     const res = await staffService.getStaffMembers();
     staffStore.staffMembers = res;
+    fuse.setCollection(res);
     return res;
   },
 });
@@ -57,8 +75,19 @@ const { isPending, mutate } = useMutation({
 });
 
 function editStaffHandler(staffId: number): void {
-  isStaffEditVisible.value = true;
-  console.log('staffId = ', staffId);
+  isStaffFormVisible.value = true;
+  selectedStaffId.value = staffId;
+  popupType.value = ActionType.EDIT;
+}
+
+function updateSearchQuery(value: string): void {
+  searchQuery.value = value;
+}
+
+function addStaffHandler(): void {
+  isStaffFormVisible.value = true;
+  selectedStaffId.value = 0;
+  popupType.value = ActionType.ADD;
 }
 
 function deleteStaffHandler(staffId: number): void {
@@ -76,4 +105,21 @@ function deleteStaffHandler(staffId: number): void {
 
   openDialog(dialogOptions);
 }
+
+const fuse = new Fuse(staffStore.staffMembers, {
+  includeScore: true,
+  minMatchCharLength: 3,
+  shouldSort: false,
+  threshold: 0.3,
+  keys: ['name', 'lastname', 'email'],
+});
+
+const filteredStaffMembers = computed(() => {
+  if (!searchQuery.value) return staffStore.staffMembers;
+
+  const res = fuse
+    .search(searchQuery.value)
+    .map((result) => result.item);
+  return res;
+});
 </script>
