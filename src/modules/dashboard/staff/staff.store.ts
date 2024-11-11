@@ -11,5 +11,9 @@ const baseState = (): StaffStoreState => ({
 
 export const useStaffStore = defineStore('staffStore', {
   state: baseState,
-  actions: {},
+  actions: {
+    getMember(id: number) {
+      return this.staffMembers.find((member) => member.id === id);
+    },
+  },
 });

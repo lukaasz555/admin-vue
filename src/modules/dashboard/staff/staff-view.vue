@@ -17,11 +17,12 @@
         ? $t('Edit staff')
         : $t('Add staff')
     "
-    @close="isStaffFormVisible = false"
+    @close="closeStaffForm"
   >
     <StaffPopup
       :action-type="popupType"
       :staff-id="selectedStaffId"
+      @close="closeStaffForm"
     />
   </Popup>
 </template>
@@ -73,6 +74,10 @@ const { isPending, mutate } = useMutation({
     staffStore.staffMembers = await staffService.getStaffMembers();
   },
 });
+
+function closeStaffForm(): void {
+  isStaffFormVisible.value = false;
+}
 
 function editStaffHandler(staffId: number): void {
   isStaffFormVisible.value = true;

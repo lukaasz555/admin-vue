@@ -1,8 +1,13 @@
 <template>
-  <div>
+  <div
+    :style="{
+      minWidth: minWidth,
+    }"
+  >
     <v-text-field
       v-model="inputValue"
       :error-messages="errorMessage"
+      :hide-details="hideDetails"
       :label="label"
       :rules="rules"
       :type="type"
@@ -42,6 +47,14 @@ const props = defineProps({
   errorMessage: {
     type: String,
     default: '',
+  },
+  minWidth: {
+    type: String,
+    default: 'unset',
+  },
+  hideDetails: {
+    type: Boolean,
+    default: false,
   },
 });
 
