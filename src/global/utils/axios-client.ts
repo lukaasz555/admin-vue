@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosError, AxiosInstance } from 'axios';
 import { ApiClient } from '../service/api-client';
 import { useGlobalStore } from '../store/global.store';
 import { Message } from '../models/message';
@@ -43,6 +43,7 @@ export class AxiosClient extends ApiClient {
       const apiRes = await this.#api.post<R>(url, { ...body });
       return apiRes.data;
     } catch (err) {
+      console.log('postData @ err', err);
       return this.handleApiError(err);
     }
   }
@@ -72,8 +73,15 @@ export class AxiosClient extends ApiClient {
   handleApiError<R>(err: unknown): R {
     const globalStore = useGlobalStore();
     const errorMessage = Message.getMessage(MessageType.ERROR);
+
     errorMessage.content =
       err instanceof Error ? err.message : 'Something went wrong';
+
+    if (err instanceof AxiosError) {
+      errorMessage.content =
+        err.response?.data?.message ?? errorMessage.content;
+    }
+
     globalStore.addMessage(errorMessage);
     console.error(err);
     throw err;

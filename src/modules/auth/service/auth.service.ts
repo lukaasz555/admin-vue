@@ -1,7 +1,7 @@
 import { LoginData } from '../viewModels/login-data';
 import { IHttpClient } from '@/global/interfaces/http-client';
 import { IHttpService } from '@/global/interfaces/http-service';
-import { FetchClient } from '@/global/utils/fetch-client';
+import { AxiosClient } from '@/global/utils/axios-client';
 
 class AuthService implements IHttpService {
   httpClient: IHttpClient;
@@ -18,4 +18,4 @@ class AuthService implements IHttpService {
   }
 }
 
-export const authService = new AuthService(new FetchClient());
+export const authService = new AuthService(new AxiosClient());

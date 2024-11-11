@@ -28,6 +28,11 @@ class StaffService implements IHttpService {
 
   async editStaff(staffData: StaffData): Promise<void> {
     // TODO: Implement this method (API side)
+
+    return this.httpClient.patchData<StaffData, void>(
+      `staffMembers/${staffData.id}`,
+      staffData,
+    );
   }
 
   async createStaff(staffData: StaffData): Promise<void> {
@@ -35,6 +40,7 @@ class StaffService implements IHttpService {
     Object.assign(staffData, {
       role: Roles.ASSISTANT,
       password: 'InitPassword1!',
+      phone: staffData.phoneNumber,
     });
 
     return this.httpClient.postData<StaffData, void>(

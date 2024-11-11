@@ -49,6 +49,9 @@ router.beforeEach((to, from, next) => {
       const message = Message.getMessage(MessageType.WARNING);
       message.content = 'Access denied';
       useGlobalStore().addMessage(message);
+      if (!from.name) {
+        router.push({ name: DashboardRoutesNames.DASHBOARD });
+      }
       next(false);
     }
   }
