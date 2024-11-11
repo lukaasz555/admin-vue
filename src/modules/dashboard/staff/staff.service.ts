@@ -2,8 +2,8 @@ import { IHttpClient } from '@/global/interfaces/http-client';
 import { IHttpService } from '@/global/interfaces/http-service';
 import { Roles } from '@/global/enums/roles.enum';
 import { StaffData } from './models/staff-data';
-import { Privileges } from '@/global/enums/privileges.enum';
 import { AxiosClient } from '@/global/utils/axios-client';
+import { Privileges } from './models/privileges';
 
 class StaffService implements IHttpService {
   httpClient: IHttpClient;
@@ -29,15 +29,14 @@ class StaffService implements IHttpService {
     );
   }
 
-  // TODO: use Privileges model after KF-6 merge
   async updatePrivileges(
     memberId: number,
-    privileges: Record<string, Privileges>,
+    privileges: Privileges,
   ): Promise<void> {
-    return this.httpClient.patchData<
-      Record<string, Privileges>,
-      void
-    >(`staffMembers/updatePrivileges/${memberId}`, privileges);
+    return this.httpClient.patchData<Privileges, void>(
+      `staffMembers/updatePrivileges/${memberId}`,
+      privileges,
+    );
   }
 }
 

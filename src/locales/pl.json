@@ -21,5 +21,7 @@
     "Categories": "Kategorie",
     "Staff member deleted": "Usunięto pracownika",
     "Delete staff member": "Usuń pracownika",
-    "Are you sure you want to delete this staff member?": "Czy na pewno chcesz usunąć tego pracownika?"
+    "Are you sure you want to delete this staff member?": "Czy na pewno chcesz usunąć tego pracownika?",
+    "Confirm": "Potwierdź",
+    "Cancel": "Anuluj"
 }
