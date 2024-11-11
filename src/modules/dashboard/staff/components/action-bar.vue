@@ -3,7 +3,7 @@
     <Input
       v-model="searchQuery"
       hide-details
-      :label="$t('Search staff member')"
+      :label="$t('Search')"
       :min-width="'300px'"
     />
     <Button

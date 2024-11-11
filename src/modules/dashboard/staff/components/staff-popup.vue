@@ -50,14 +50,14 @@ const createStaffMutation = useMutation({
   mutationFn: (staffData: StaffData) =>
     staffService.createStaff(staffData),
   onSuccess: () => {
-    handleSuccess(i18n.global.t('Staff member created'));
+    handleSuccess(i18n.global.t('Member created'));
   },
 });
 const editStaffMutation = useMutation({
   mutationFn: (staffData: StaffData) =>
     staffService.editStaff(staffData),
   onSuccess: () => {
-    handleSuccess(i18n.global.t('Staff member updated'));
+    handleSuccess(i18n.global.t('Member updated'));
   },
 });
 

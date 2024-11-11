@@ -25,5 +25,12 @@
     "Confirm": "Potwierdź",
     "Cancel": "Anuluj",
     "Edit": "Edytuj",
-    "Edit Staff": "Edycja pracownika"
+    "Edit Staff": "Edycja pracownika",
+    "Search": "Szukaj",
+    "Add member": "Dodaj pracownika",
+    "Member created": "Pracownik dodany",
+    "Member updated": "Pracownik zaktualizowany",
+    "Edit staff": "Edytuj pracownika",
+    "Add staff": "Dodaj pracownika",
+    "Delete": "Usuń"
 }

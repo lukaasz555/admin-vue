@@ -25,5 +25,12 @@
     "Confirm": "Confirm",
     "Cancel": "Cancel",
     "Edit": "Edit",
-    "Edit Staff": "Edit Staff"
+    "Edit Staff": "Edit Staff",
+    "Search": "Search",
+    "Add member": "Add member",
+    "Member created": "Member created",
+    "Member updated": "Member updated",
+    "Edit staff": "Edit staff",
+    "Add staff": "Add staff",
+    "Delete": "Delete"
 }
