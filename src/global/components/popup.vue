@@ -42,6 +42,7 @@ const isPopupVisible = computed({
 
 <style lang="scss" scoped>
 .dialog {
+  max-width: $popup-max-width;
   &__section {
     display: flex;
     flex-direction: column;

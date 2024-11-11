@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isDialogVisible">
+  <v-dialog v-model="isDialogVisible" class="dialog">
     <div class="container">
       <header>
         <h2>{{ title }}</h2>
@@ -53,20 +53,23 @@ const isDialogVisible = computed({
 </script>
 
 <style scoped lang="scss">
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  row-gap: 20px;
-  border-radius: $border-radius-l;
-  padding: 1rem;
-  background-color: $color-background;
-
-  footer {
+.dialog {
+  max-width: $popup-max-width;
+  .container {
     display: flex;
-    justify-content: center;
-    column-gap: 20px;
+    flex-direction: column;
     align-items: center;
+    row-gap: 20px;
+    border-radius: $border-radius-l;
+    padding: 1rem;
+    background-color: $color-background;
+
+    footer {
+      display: flex;
+      justify-content: center;
+      column-gap: 20px;
+      align-items: center;
+    }
   }
 }
 </style>

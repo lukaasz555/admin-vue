@@ -23,6 +23,7 @@
       :action-type="popupType"
       :staff-id="selectedStaffId"
       @close="closeStaffForm"
+      @refetch="refetch"
     />
   </Popup>
 </template>
@@ -55,8 +56,9 @@ const selectedStaffId = ref(0);
 const popupType = ref(ActionType.ADD);
 const searchQuery = ref('');
 
-const { isLoading } = useQuery({
+const { isLoading, refetch } = useQuery({
   queryKey: ['getStaffMembers'],
+  staleTime: 0,
   queryFn: async () => {
     const res = await staffService.getStaffMembers();
     staffStore.staffMembers = res;

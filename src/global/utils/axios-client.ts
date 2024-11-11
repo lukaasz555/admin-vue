@@ -43,7 +43,6 @@ export class AxiosClient extends ApiClient {
       const apiRes = await this.#api.post<R>(url, { ...body });
       return apiRes.data;
     } catch (err) {
-      console.log('postData @ err', err);
       return this.handleApiError(err);
     }
   }
