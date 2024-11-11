@@ -18,10 +18,6 @@
 <script setup lang="ts">
 import { useMutation, useQuery } from '@tanstack/vue-query';
 import StaffDataTable from './components/staff-data-table.vue';
-import {
-  deleteMember,
-  getStaffMembers,
-} from './service/staff.service';
 import { useStaffStore } from './staff.store';
 import { useGlobalStore } from '@/global/store/global.store';
 import { MessageType } from '@/global/enums/message-type.enum';
@@ -31,6 +27,7 @@ import {
 } from '@/global/composables/useDialog';
 import { DialogTypeEnum } from '@/global/enums/dialog-type.enum';
 import { Message } from '@/global/models/message';
+import { staffService } from './service/staff.service';
 import StaffPopup from './components/staff-popup.vue';
 import Loader from '../components/loader.vue';
 import Popup from '@/global/components/popup.vue';
@@ -43,19 +40,19 @@ const isStaffEditVisible = ref(false);
 const { isLoading } = useQuery({
   queryKey: ['getStaffMembers'],
   queryFn: async () => {
-    const res = await getStaffMembers();
+    const res = await staffService.getStaffMembers();
     staffStore.staffMembers = res;
     return res;
   },
 });
 
 const { isPending, mutate } = useMutation({
-  mutationFn: (staffId: number) => deleteMember(staffId),
+  mutationFn: (staffId: number) => staffService.deleteMember(staffId),
   onSuccess: async () => {
     const message = Message.getMessage(MessageType.SUCCESS);
     message.content = i18n.global.t('Staff member deleted');
     globalStore.addMessage(message);
-    staffStore.staffMembers = await getStaffMembers();
+    staffStore.staffMembers = await staffService.getStaffMembers();
   },
 });
 

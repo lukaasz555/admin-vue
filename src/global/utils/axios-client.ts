@@ -3,6 +3,8 @@ import { ApiClient } from '../service/api-client';
 import { useGlobalStore } from '../store/global.store';
 import { Message } from '../models/message';
 import { MessageType } from '../enums/message-type.enum';
+import { LocalStorage } from '../enums/local-storage.enum';
+import { useUserStore } from '../store/user.store';
 
 export class AxiosClient extends ApiClient {
   #api: AxiosInstance;
@@ -11,6 +13,20 @@ export class AxiosClient extends ApiClient {
     const baseURL = `${import.meta.env.VITE_API_URL}`;
     super(baseURL);
     this.#api = axios.create({ baseURL: this.baseURL });
+
+    this.#api.interceptors.request.use((config) => {
+      const userStore = useUserStore();
+      const token = localStorage.getItem(LocalStorage.STORE_TOKEN);
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      if (userStore.user) {
+        config.headers.userId = userStore.user.id;
+      }
+
+      return config;
+    });
   }
 
   async getData<T, R = T>(url: string, params?: T): Promise<R> {
@@ -37,6 +53,19 @@ export class AxiosClient extends ApiClient {
       return apiRes.data;
     } catch (err) {
       return this.handleApiError(err);
+    }
+  }
+
+  async deleteData<T = undefined>(
+    url: string,
+    body?: T,
+  ): Promise<void> {
+    try {
+      await this.#api.delete(url, {
+        ...body,
+      });
+    } catch (err) {
+      return this.handleApiError<void>(err);
     }
   }
 

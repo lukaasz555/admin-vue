@@ -5,14 +5,27 @@ import { Message } from '@/global/models/message';
 
 export class FetchClient extends ApiClient {
   constructor() {
-    const baseURL = `${import.meta.env.VITE_API_URL}`;
-    super(baseURL);
+    super(import.meta.env.VITE_API_URL);
   }
 
   async getData<T, R = T>(url: string): Promise<R> {
     try {
       const apiRes = await fetch(`${this.baseURL}/${url}`, {
         method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return apiRes.json();
+    } catch (err) {
+      return this.handleApiError(err);
+    }
+  }
+
+  async deleteData<T = undefined>(url: string): Promise<T> {
+    try {
+      const apiRes = await fetch(`${this.baseURL}/${url}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },

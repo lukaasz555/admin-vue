@@ -13,6 +13,11 @@ export abstract class ApiClient implements IHttpClient {
 
   abstract getData<T, R = T>(url: string): Promise<R>;
   abstract postData<T, R = void>(url: string, body: T): Promise<R>;
-  // TODO: add other rest methods after KF-6 merge
+  abstract patchData<T, R = void>(url: string, body: T): Promise<R>;
+  abstract deleteData<T = undefined>(
+    url: string,
+    body?: T,
+  ): Promise<void>;
+
   abstract handleApiError<R>(err: unknown): R;
 }

@@ -23,9 +23,6 @@ const { isPending, mutate } = useMutation({
   onSuccess: (data) => {
     userStore.setUserWithToken(data);
     handleLoginSuccess();
-    router.push({
-      name: DashboardRoutesNames.DASHBOARD,
-    });
   },
 });
 
@@ -37,5 +34,8 @@ function handleLoginSuccess(): void {
   const message = Message.getMessage(MessageType.SUCCESS);
   message.content = i18n.global.t('Login successful');
   globalStore.addMessage(message);
+  router.push({
+    name: DashboardRoutesNames.DASHBOARD,
+  });
 }
 </script>
