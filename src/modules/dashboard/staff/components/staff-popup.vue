@@ -1,28 +1,60 @@
 <template>
-  <StaffForm
-    :action-type="actionType"
-    :staff-id="staffId"
-    @cancel="emit('close')"
-    @confirm="onConfirm"
-  />
+  <div class="staff-popup">
+    <TabsMenu
+      :items="tabItems"
+      :selected-tab="currentTab"
+      tabs-align="center"
+      @change="currentTab = $event"
+    />
+
+    <v-tabs-window v-model="currentTab">
+      <v-tabs-window-item :value="tabItems[0].value">
+        <StaffForm
+          :action-type="actionType"
+          :staff-id="staffId"
+          @cancel="emit('close')"
+          @confirm="onConfirm"
+        />
+      </v-tabs-window-item>
+      <v-tabs-window-item :value="tabItems[1].value">
+        <StaffPrivileges :staff-id="staffId" />
+      </v-tabs-window-item>
+    </v-tabs-window>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { staffService } from '../service/staff.service';
 import { StaffData } from '../models/staff-data';
-import StaffForm from './staff-form.vue';
 import { ActionType } from '../../enums/action-type.enum';
 import { useMutation } from '@tanstack/vue-query';
 import { useGlobalStore } from '@/global/store/global.store';
+import { TranslateResult } from 'vue-i18n';
 import { Message } from '@/global/models/message';
 import { MessageType } from '@/global/enums/message-type.enum';
-import { TranslateResult } from 'vue-i18n';
+import { TabsMenuItem } from '../../types/tabs-menu-item';
+import StaffPrivileges from './staff-privileges.vue';
+import StaffForm from './staff-form.vue';
+import TabsMenu from '../../components/tabs-menu.vue';
 import i18n from '@/plugins/i18n';
 
 type StaffPopupEmits = {
   (e: 'close'): void;
   (e: 'refetch'): void;
 };
+
+const tabItems: TabsMenuItem[] = [
+  {
+    label: i18n.global.t('General'),
+    value: 'general',
+  },
+  {
+    label: i18n.global.t('Privileges'),
+    value: 'privileges',
+  },
+];
+
+const currentTab = ref(tabItems[0]);
 
 const emit = defineEmits<StaffPopupEmits>();
 
@@ -70,3 +102,15 @@ async function onConfirm(staffData: StaffData): Promise<void> {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.staff-popup {
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+
+  .v-tabs-window {
+    padding: 12px 0;
+  }
+}
+</style>
