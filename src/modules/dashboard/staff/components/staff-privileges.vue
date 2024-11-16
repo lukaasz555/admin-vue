@@ -6,6 +6,7 @@
       class="item"
       :current-value="privilegeItem.value"
       :privilege="privilegeItem.privilege"
+      :staff-id="staffId"
       @update="updatePrivilege"
     />
   </div>
@@ -55,11 +56,3 @@ const privilegesItems = computed(() => {
   );
 });
 </script>
-
-<style scoped lang="scss">
-.privileges {
-  .item {
-    // ...
-  }
-}
-</style>

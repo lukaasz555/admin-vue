@@ -1,6 +1,7 @@
 <template>
   <v-select
     v-model="selectValue"
+    :disabled="disabled"
     item-title="displayText"
     item-value="value"
     :items="items"
@@ -31,6 +32,7 @@ const props = defineProps({
   },
   label: { type: String, required: true },
   variant: { type: String, default: 'outlined' },
+  disabled: { type: Boolean, default: false },
 });
 
 const selectValue = computed({
