@@ -20,4 +20,27 @@ export class Privileges implements IDashboardPrivileges {
     this[key] = value;
     return this;
   }
+
+  getDataForUpdate(): IDashboardPrivileges {
+    return {
+      [DashboardModulesEnum.ORDERS]:
+        this[DashboardModulesEnum.ORDERS],
+      [DashboardModulesEnum.CUSTOMERS]:
+        this[DashboardModulesEnum.CUSTOMERS],
+      [DashboardModulesEnum.DISCOUNTS]:
+        this[DashboardModulesEnum.DISCOUNTS],
+      [DashboardModulesEnum.PAYMENTS]:
+        this[DashboardModulesEnum.PAYMENTS],
+      [DashboardModulesEnum.PRODUCTS]:
+        this[DashboardModulesEnum.PRODUCTS],
+      [DashboardModulesEnum.REPORTS]:
+        this[DashboardModulesEnum.REPORTS],
+      [DashboardModulesEnum.SETTINGS]:
+        this[DashboardModulesEnum.SETTINGS],
+      [DashboardModulesEnum.STAFF_MEMBERS]:
+        this[DashboardModulesEnum.STAFF_MEMBERS],
+      [DashboardModulesEnum.CATEGORIES]:
+        this[DashboardModulesEnum.CATEGORIES],
+    };
+  }
 }

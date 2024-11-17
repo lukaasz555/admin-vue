@@ -18,6 +18,7 @@ import { Privileges } from '../models/privileges';
 import { useStaffStore } from '../staff.store';
 import { Privileges as PrivilegesEnum } from '@/global/enums/privileges.enum';
 import StaffPrivilegesItem from './staff-privileges-item.vue';
+import { IDashboardPrivileges } from '../../interfaces/IDashoardPrivileges';
 
 const props = defineProps({
   staffId: {
@@ -55,4 +56,11 @@ const privilegesItems = computed(() => {
       },
   );
 });
+
+function getNewPrivileges(): IDashboardPrivileges {
+  const newPrivileges = privileges.value.getDataForUpdate();
+  return newPrivileges;
+}
+
+defineExpose({ getNewPrivileges });
 </script>

@@ -3,9 +3,9 @@ import { IHttpService } from '@/global/interfaces/http-service';
 import { Roles } from '@/global/enums/roles.enum';
 import { StaffData } from '../models/staff-data';
 import { AxiosClient } from '@/global/utils/axios-client';
-import { Privileges } from '../models/privileges';
 import { StaffMember } from '../models/staff-member';
 import { plainToInstance } from 'class-transformer';
+import { IDashboardPrivileges } from '../../interfaces/IDashoardPrivileges';
 
 class StaffService implements IHttpService {
   httpClient: IHttpClient;
@@ -51,9 +51,9 @@ class StaffService implements IHttpService {
 
   async updatePrivileges(
     memberId: number,
-    privileges: Privileges,
+    privileges: IDashboardPrivileges,
   ): Promise<void> {
-    return this.httpClient.patchData<Privileges, void>(
+    return this.httpClient.patchData<IDashboardPrivileges, void>(
       `staffMembers/updatePrivileges/${memberId}`,
       privileges,
     );
