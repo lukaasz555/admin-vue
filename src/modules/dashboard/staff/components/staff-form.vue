@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="handleConfirm">
+  <form>
     <Input
       v-model="staffData.name"
       :error-message="getErrorMessage('name')"
@@ -20,19 +20,6 @@
       :error-message="getErrorMessage('phoneNumber')"
       :label="$t('Phone number')"
     />
-    <div class="mt-5 d-flex justify-center">
-      <Button
-        :label="
-          actionType === ActionType.ADD ? $t('Add') : $t('Edit')
-        "
-        type="submit"
-      />
-      <Button
-        :label="$t('Cancel')"
-        variant="text"
-        @click="handleCancel"
-      />
-    </div>
   </form>
 </template>
 
@@ -40,16 +27,9 @@
 import { onMounted, onUnmounted, PropType } from 'vue';
 import { StaffData } from '../models/staff-data';
 import { staffSchema } from '../utils/staff-form-schema';
-import Button from '@/global/components/button.vue';
-import Input from '@/global/components/input.vue';
 import { ActionType } from '../../enums/action-type.enum';
 import { useStaffStore } from '../staff.store';
-
-type StaffFormEmits = {
-  (e: 'confirm', staffData: StaffData): void;
-  (e: 'cancel'): void;
-};
-const emit = defineEmits<StaffFormEmits>();
+import Input from '@/global/components/input.vue';
 
 const props = defineProps({
   staffId: {
@@ -66,19 +46,35 @@ const staffStore = useStaffStore();
 const staffData = ref(new StaffData());
 const errors = ref<Record<string, string>>({});
 
-function handleConfirm(): void {
-  const isValidForm = validateForm();
-  if (!isValidForm) return;
-  emit('confirm', staffData.value);
+onMounted(() => {
+  if (props.actionType === ActionType.EDIT) {
+    const member = staffStore.getMember(props.staffId);
+    if (member) {
+      staffData.value.setData(member);
+    }
+  }
+});
+
+onUnmounted(() => {
+  staffData.value = new StaffData();
+});
+
+function getErrorMessage(key: keyof StaffData): string {
+  return errors.value[key] || '';
 }
 
-function handleCancel(): void {
+function resetForm(): void {
   staffData.value = new StaffData();
-  emit('cancel');
+}
+
+function getStaffData(): StaffData {
+  return staffData.value;
 }
 
 function validateForm(): boolean {
+  console.log('validateForm runs');
   const result = staffSchema.safeParse(staffData.value);
+  console.log('validateForm result', result);
   if (result.success) {
     errors.value = {};
     return true;
@@ -94,20 +90,5 @@ function validateForm(): boolean {
   }
 }
 
-function getErrorMessage(key: keyof StaffData): string {
-  return errors.value[key] || '';
-}
-
-onMounted(() => {
-  if (props.actionType === ActionType.EDIT) {
-    const member = staffStore.getMember(props.staffId);
-    if (member) {
-      staffData.value.setData(member);
-    }
-  }
-});
-
-onUnmounted(() => {
-  staffData.value = new StaffData();
-});
+defineExpose({ validateForm, getStaffData, resetForm });
 </script>

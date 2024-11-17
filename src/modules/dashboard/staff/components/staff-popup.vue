@@ -10,10 +10,9 @@
     <v-tabs-window v-model="currentTab">
       <v-tabs-window-item :value="tabItemsComputed[0].value">
         <StaffForm
+          ref="staffForm"
           :action-type="actionType"
           :staff-id="staffId"
-          @cancel="emit('close')"
-          @confirm="onConfirm"
         />
       </v-tabs-window-item>
       <v-tabs-window-item
@@ -23,6 +22,19 @@
         <StaffPrivileges ref="staffPrivileges" :staff-id="staffId" />
       </v-tabs-window-item>
     </v-tabs-window>
+    <div class="mt-5 d-flex justify-center">
+      <Button
+        :label="
+          actionType === ActionType.ADD ? $t('Add') : $t('Edit')
+        "
+        @click="handleConfirm"
+      />
+      <Button
+        :label="$t('Cancel')"
+        variant="text"
+        @click="handleCancel"
+      />
+    </div>
   </div>
 </template>
 
@@ -31,16 +43,14 @@ import { staffService } from '../service/staff.service';
 import { StaffData } from '../models/staff-data';
 import { ActionType } from '../../enums/action-type.enum';
 import { useMutation } from '@tanstack/vue-query';
-import { useGlobalStore } from '@/global/store/global.store';
-import { TranslateResult } from 'vue-i18n';
-import { Message } from '@/global/models/message';
-import { MessageType } from '@/global/enums/message-type.enum';
+import { staffPopupTabItems } from '../utils/staff-popup-tab-items';
+import { IDashboardPrivileges } from '../../interfaces/IDashoardPrivileges';
+import { handleError, handleSuccess } from '../../utils/helpers';
 import StaffPrivileges from './staff-privileges.vue';
 import StaffForm from './staff-form.vue';
 import TabsMenu from '../../components/tabs-menu.vue';
+import Button from '@/global/components/button.vue';
 import i18n from '@/plugins/i18n';
-import { staffPopupTabItems } from '../utils/staff-popup-tab-items';
-import { IDashboardPrivileges } from '../../interfaces/IDashoardPrivileges';
 
 type StaffPopupEmits = {
   (e: 'close'): void;
@@ -60,23 +70,6 @@ const props = defineProps({
   },
 });
 
-const globalStore = useGlobalStore();
-const staffPrivileges = ref<InstanceType<typeof StaffPrivileges>>();
-
-function handleSuccess(messageText: TranslateResult): void {
-  const message = Message.getMessage(MessageType.SUCCESS);
-  message.content = messageText;
-  globalStore.addMessage(message);
-  emit('refetch');
-  emit('close');
-}
-
-function handleError(messageText: TranslateResult): void {
-  const message = Message.getMessage(MessageType.ERROR);
-  message.content = messageText;
-  globalStore.addMessage(message);
-}
-
 const tabItemsComputed = computed(() => {
   if (props.actionType === ActionType.ADD) {
     return staffPopupTabItems.filter(
@@ -85,31 +78,22 @@ const tabItemsComputed = computed(() => {
   } else return staffPopupTabItems;
 });
 
+const staffForm = ref<InstanceType<typeof StaffForm>>();
+const staffPrivileges = ref<InstanceType<typeof StaffPrivileges>>();
 const currentTab = ref(tabItemsComputed.value[0]);
 
-const createStaffMutation = useMutation({
-  mutationFn: (staffData: StaffData) =>
-    staffService.createStaff(staffData),
-  onSuccess: () => {
-    handleSuccess(i18n.global.t('Member created'));
-  },
-});
-const editStaffMutation = useMutation({
-  mutationFn: (staffData: StaffData) =>
-    staffService.editStaff(staffData),
-  onSuccess: () => {
-    handleSuccess(i18n.global.t('Member updated'));
-  },
-});
-const updatePrivileges = useMutation({
-  mutationFn: (data: {
-    staffId: number;
-    privileges: IDashboardPrivileges;
-  }) => staffService.updatePrivileges(data.staffId, data.privileges),
-  onSuccess: () => {
-    handleSuccess(i18n.global.t('Privileges updated'));
-  },
-});
+function handleCancel(): void {
+  const staffFormInstance = staffForm.value;
+  if (staffFormInstance) {
+    staffFormInstance.resetForm();
+  }
+  emit('close');
+}
+
+function onSuccessCallback(): void {
+  emit('refetch');
+  emit('close');
+}
 
 async function updateStaffData(staffData: StaffData): Promise<void> {
   return new Promise((resolve) => {
@@ -145,18 +129,18 @@ async function handleStaffDataAndPrivilegesUpdate(
   }
 }
 
-async function onConfirm(staffData: StaffData): Promise<void> {
-  const isStaffFormValid = true;
+async function handleConfirm(): Promise<void> {
+  const staffFormInstance = staffForm.value;
   const newPrivileges = staffPrivileges.value?.getNewPrivileges();
 
-  if (!isStaffFormValid || !newPrivileges) {
-    throw new Error('Invalid form data');
+  if (!staffFormInstance?.validateForm() || !newPrivileges) {
+    throw new Error('Invalid form/privileges data');
   }
+  const staffData = staffFormInstance.getStaffData();
 
   if (props.actionType === ActionType.ADD) {
     return createStaffMutation.mutate(staffData);
   }
-
   if (props.actionType === ActionType.EDIT && newPrivileges) {
     return handleStaffDataAndPrivilegesUpdate(
       staffData,
@@ -164,6 +148,33 @@ async function onConfirm(staffData: StaffData): Promise<void> {
     );
   }
 }
+
+const createStaffMutation = useMutation({
+  mutationFn: (staffData: StaffData) =>
+    staffService.createStaff(staffData),
+  onSuccess: () => {
+    handleSuccess(i18n.global.t('Member created'), onSuccessCallback);
+  },
+});
+const editStaffMutation = useMutation({
+  mutationFn: (staffData: StaffData) =>
+    staffService.editStaff(staffData),
+  onSuccess: () => {
+    handleSuccess(i18n.global.t('Member updated'), onSuccessCallback);
+  },
+});
+const updatePrivileges = useMutation({
+  mutationFn: (data: {
+    staffId: number;
+    privileges: IDashboardPrivileges;
+  }) => staffService.updatePrivileges(data.staffId, data.privileges),
+  onSuccess: () => {
+    handleSuccess(
+      i18n.global.t('Privileges updated'),
+      onSuccessCallback,
+    );
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -174,6 +185,9 @@ async function onConfirm(staffData: StaffData): Promise<void> {
 
   .v-tabs-window {
     padding: 12px 0;
+    max-height: 400px;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
   }
 }
 </style>
