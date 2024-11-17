@@ -1,4 +1,4 @@
-export type TabsMenuItem = {
+export type TabsMenuItem<T> = {
   label: string;
-  value: string;
+  value: T;
 };

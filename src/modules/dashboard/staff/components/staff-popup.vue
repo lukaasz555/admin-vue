@@ -1,14 +1,14 @@
 <template>
   <div class="staff-popup">
     <TabsMenu
-      :items="tabItems"
+      :items="tabItemsComputed"
       :selected-tab="currentTab"
       tabs-align="center"
       @change="currentTab = $event"
     />
 
     <v-tabs-window v-model="currentTab">
-      <v-tabs-window-item :value="tabItems[0].value">
+      <v-tabs-window-item :value="tabItemsComputed[0].value">
         <StaffForm
           :action-type="actionType"
           :staff-id="staffId"
@@ -16,8 +16,11 @@
           @confirm="onConfirm"
         />
       </v-tabs-window-item>
-      <v-tabs-window-item :value="tabItems[1].value">
-        <StaffPrivileges :staff-id="staffId" />
+      <v-tabs-window-item
+        v-if="actionType === ActionType.EDIT"
+        :value="tabItemsComputed[1].value"
+      >
+        <StaffPrivileges ref="staffPrivileges" :staff-id="staffId" />
       </v-tabs-window-item>
     </v-tabs-window>
   </div>
@@ -32,29 +35,17 @@ import { useGlobalStore } from '@/global/store/global.store';
 import { TranslateResult } from 'vue-i18n';
 import { Message } from '@/global/models/message';
 import { MessageType } from '@/global/enums/message-type.enum';
-import { TabsMenuItem } from '../../types/tabs-menu-item';
 import StaffPrivileges from './staff-privileges.vue';
 import StaffForm from './staff-form.vue';
 import TabsMenu from '../../components/tabs-menu.vue';
 import i18n from '@/plugins/i18n';
+import { staffPopupTabItems } from '../utils/staff-popup-tab-items';
+import { IDashboardPrivileges } from '../../interfaces/IDashoardPrivileges';
 
 type StaffPopupEmits = {
   (e: 'close'): void;
   (e: 'refetch'): void;
 };
-
-const tabItems: TabsMenuItem[] = [
-  {
-    label: i18n.global.t('General'),
-    value: 'general',
-  },
-  {
-    label: i18n.global.t('Privileges'),
-    value: 'privileges',
-  },
-];
-
-const currentTab = ref(tabItems[0]);
 
 const emit = defineEmits<StaffPopupEmits>();
 
@@ -70,6 +61,8 @@ const props = defineProps({
 });
 
 const globalStore = useGlobalStore();
+const staffPrivileges = ref<InstanceType<typeof StaffPrivileges>>();
+
 function handleSuccess(messageText: TranslateResult): void {
   const message = Message.getMessage(MessageType.SUCCESS);
   message.content = messageText;
@@ -77,6 +70,22 @@ function handleSuccess(messageText: TranslateResult): void {
   emit('refetch');
   emit('close');
 }
+
+function handleError(messageText: TranslateResult): void {
+  const message = Message.getMessage(MessageType.ERROR);
+  message.content = messageText;
+  globalStore.addMessage(message);
+}
+
+const tabItemsComputed = computed(() => {
+  if (props.actionType === ActionType.ADD) {
+    return staffPopupTabItems.filter(
+      (el) => el.value !== 'privileges',
+    );
+  } else return staffPopupTabItems;
+});
+
+const currentTab = ref(tabItemsComputed.value[0]);
 
 const createStaffMutation = useMutation({
   mutationFn: (staffData: StaffData) =>
@@ -92,13 +101,67 @@ const editStaffMutation = useMutation({
     handleSuccess(i18n.global.t('Member updated'));
   },
 });
+const updatePrivileges = useMutation({
+  mutationFn: (data: {
+    staffId: number;
+    privileges: IDashboardPrivileges;
+  }) => staffService.updatePrivileges(data.staffId, data.privileges),
+  onSuccess: () => {
+    handleSuccess(i18n.global.t('Privileges updated'));
+  },
+});
+
+async function updateStaffData(staffData: StaffData): Promise<void> {
+  return new Promise((resolve) => {
+    resolve(editStaffMutation.mutate(staffData));
+  });
+}
+
+async function updateStaffPrivileges(
+  privileges: IDashboardPrivileges,
+): Promise<void> {
+  return new Promise((resolve) => {
+    resolve(
+      updatePrivileges.mutate({
+        staffId: props.staffId,
+        privileges,
+      }),
+    );
+  });
+}
+
+async function handleStaffDataAndPrivilegesUpdate(
+  staffData: StaffData,
+  newPrivileges: IDashboardPrivileges,
+): Promise<void> {
+  try {
+    await updateStaffData(staffData);
+    await updateStaffPrivileges(newPrivileges);
+  } catch (err) {
+    handleError(
+      i18n.global.t('Error updating staff data and privileges'),
+    );
+    throw new Error('Error updating staff data and privileges');
+  }
+}
 
 async function onConfirm(staffData: StaffData): Promise<void> {
+  const isStaffFormValid = true;
+  const newPrivileges = staffPrivileges.value?.getNewPrivileges();
+
+  if (!isStaffFormValid || !newPrivileges) {
+    throw new Error('Invalid form data');
+  }
+
   if (props.actionType === ActionType.ADD) {
     return createStaffMutation.mutate(staffData);
   }
-  if (props.actionType === ActionType.EDIT) {
-    return editStaffMutation.mutate(staffData);
+
+  if (props.actionType === ActionType.EDIT && newPrivileges) {
+    return handleStaffDataAndPrivilegesUpdate(
+      staffData,
+      newPrivileges,
+    );
   }
 }
 </script>
