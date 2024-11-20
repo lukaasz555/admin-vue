@@ -72,9 +72,7 @@ function getStaffData(): StaffData {
 }
 
 function validateForm(): boolean {
-  console.log('validateForm runs');
   const result = staffSchema.safeParse(staffData.value);
-  console.log('validateForm result', result);
   if (result.success) {
     errors.value = {};
     return true;

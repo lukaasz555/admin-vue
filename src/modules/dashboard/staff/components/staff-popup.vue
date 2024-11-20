@@ -22,7 +22,10 @@
         <StaffPrivileges ref="staffPrivileges" :staff-id="staffId" />
       </v-tabs-window-item>
     </v-tabs-window>
-    <div class="mt-5 d-flex justify-center">
+    <div
+      v-if="permissions.canAdd && permissions.canEditStaffData"
+      class="mt-5 d-flex justify-center"
+    >
       <Button
         :label="
           actionType === ActionType.ADD ? $t('Add') : $t('Edit')
@@ -51,6 +54,12 @@ import StaffForm from './staff-form.vue';
 import TabsMenu from '../../components/tabs-menu.vue';
 import Button from '@/global/components/button.vue';
 import i18n from '@/plugins/i18n';
+import { useUserStore } from '@/global/store/user.store';
+import { DashboardModulesEnum } from '../../enums/dashboard-modules.enum';
+import {
+  getStaffPopupPermissions,
+  IStaffPopupPermissions,
+} from '../staff-popup.permissions';
 
 type StaffPopupEmits = {
   (e: 'close'): void;
@@ -76,6 +85,13 @@ const tabItemsComputed = computed(() => {
       (el) => el.value !== 'privileges',
     );
   } else return staffPopupTabItems;
+});
+
+const permissions = computed<IStaffPopupPermissions>(() => {
+  const modulePrivileges = useUserStore().getPrivilegesForModule(
+    DashboardModulesEnum.STAFF_MEMBERS,
+  );
+  return getStaffPopupPermissions(modulePrivileges);
 });
 
 const staffForm = ref<InstanceType<typeof StaffForm>>();
@@ -133,7 +149,10 @@ async function handleConfirm(): Promise<void> {
   const staffFormInstance = staffForm.value;
   const newPrivileges = staffPrivileges.value?.getNewPrivileges();
 
-  if (!staffFormInstance?.validateForm() || !newPrivileges) {
+  if (
+    !staffFormInstance?.validateForm() ||
+    (props.actionType === ActionType.EDIT && !newPrivileges)
+  ) {
     throw new Error('Invalid form/privileges data');
   }
   const staffData = staffFormInstance.getStaffData();
