@@ -16,9 +16,12 @@
 
 <script setup lang="ts">
 import { useDialog } from '@/global/composables/useDialog';
-import AppBar from './components/app-bar.vue';
-import NavigationDrawer from './components/navigation-drawer.vue';
+import { useQuery } from '@tanstack/vue-query';
+import { dashboardService } from './service/dashboard.service';
+import { useGlobalStore } from '@/global/store/global.store';
 import ConfirmationDialog from './components/confirmation-dialog.vue';
+import NavigationDrawer from './components/navigation-drawer.vue';
+import AppBar from './components/app-bar.vue';
 
 const isDrawerVisible = ref(false);
 const { isVisible, closeDialog, onConfirm } = useDialog();
@@ -31,4 +34,12 @@ function confirmDialog() {
 function toggleDrawerVisibility() {
   isDrawerVisible.value = !isDrawerVisible.value;
 }
+
+useQuery({
+  queryKey: ['getPrivilegesLimit'],
+  queryFn: async () => {
+    const limits = await dashboardService.getPrivilegesLimits();
+    useGlobalStore().setPrivilegeLimits(limits);
+  },
+});
 </script>
