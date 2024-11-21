@@ -1,9 +1,5 @@
 <template>
-  <div
-    :style="{
-      minWidth: minWidth,
-    }"
-  >
+  <div :style="{ minWidth }">
     <v-text-field
       v-model="inputValue"
       :error-messages="errorMessage"

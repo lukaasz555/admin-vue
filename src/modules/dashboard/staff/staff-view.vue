@@ -113,20 +113,21 @@ function deleteStaffHandler(staffId: number): void {
   openDialog(dialogOptions);
 }
 
+const minLengthToSearch = 3;
+
 const fuse = new Fuse(staffStore.staffMembers, {
   includeScore: true,
-  minMatchCharLength: 3,
+  minMatchCharLength: minLengthToSearch,
   shouldSort: false,
-  threshold: 0.3,
-  keys: ['name', 'lastname', 'email'],
+  threshold: 0.4,
+  keys: ['fullName', 'email'],
 });
 
 const filteredStaffMembers = computed(() => {
-  if (!searchQuery.value) return staffStore.staffMembers;
+  if (searchQuery.value.length < minLengthToSearch) {
+    return staffStore.staffMembers;
+  }
 
-  const res = fuse
-    .search(searchQuery.value)
-    .map((result) => result.item);
-  return res;
+  return fuse.search(searchQuery.value).map((result) => result.item);
 });
 </script>

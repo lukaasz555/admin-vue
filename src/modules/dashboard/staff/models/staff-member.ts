@@ -10,4 +10,8 @@ export class StaffMember {
   role = Roles.ASSISTANT;
   phone = '';
   privileges = new Privileges();
+
+  get fullName(): string {
+    return `${this.name} ${this.lastname}`;
+  }
 }
