@@ -1,7 +1,7 @@
 import { IHttpClient } from '../interfaces/http-client';
 
 export abstract class ApiClient implements IHttpClient {
-  baseURL: string;
+  readonly baseURL: string;
 
   constructor(baseURL: string) {
     if (!baseURL.length) {

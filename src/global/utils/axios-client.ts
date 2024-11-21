@@ -10,10 +10,16 @@ export class AxiosClient extends ApiClient {
   #api: AxiosInstance;
 
   constructor() {
-    const baseURL = `${import.meta.env.VITE_API_URL}`;
-    super(baseURL);
-    this.#api = axios.create({ baseURL: this.baseURL });
+    super(import.meta.env.VITE_API_URL);
+    this.#api = this.#getAxiosInstance(this.baseURL);
+    this.#setupAxiosInterceptors();
+  }
 
+  #getAxiosInstance(baseURL: string): AxiosInstance {
+    return axios.create({ baseURL });
+  }
+
+  #setupAxiosInterceptors(): void {
     this.#api.interceptors.request.use((config) => {
       const userStore = useUserStore();
       const token = localStorage.getItem(LocalStorage.STORE_TOKEN);
