@@ -39,9 +39,9 @@ const props = defineProps({
 
 const globalStore = useGlobalStore();
 function handleSuccess(messageText: TranslateResult): void {
-  const message = Message.getMessage(MessageType.SUCCESS);
-  message.content = messageText;
-  globalStore.addMessage(message);
+  globalStore.addMessage(
+    Message.getMessage(MessageType.SUCCESS, messageText),
+  );
   emit('refetch');
   emit('close');
 }

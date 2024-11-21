@@ -40,10 +40,10 @@
 import { onMounted, onUnmounted, PropType } from 'vue';
 import { StaffData } from '../models/staff-data';
 import { staffSchema } from '../utils/staff-form-schema';
-import Button from '@/global/components/button.vue';
-import Input from '@/global/components/input.vue';
 import { ActionType } from '../../enums/action-type.enum';
 import { useStaffStore } from '../staff.store';
+import Button from '@/global/components/button.vue';
+import Input from '@/global/components/input.vue';
 
 type StaffFormEmits = {
   (e: 'confirm', staffData: StaffData): void;
