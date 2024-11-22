@@ -1,3 +1,4 @@
+import { TranslateResult } from 'vue-i18n';
 import { MessageType } from '../enums/message-type.enum';
 import { getUniqueId } from '../helpers/get-unique-id';
 
@@ -33,10 +34,14 @@ export class Message {
     }
   }
 
-  static getMessage(messageType: MessageType): Message {
+  static getMessage(
+    messageType: MessageType,
+    content?: TranslateResult,
+  ): Message {
     const message = new Message();
     message.type = messageType;
     message.title = getMessageTitle(messageType);
+    message.content = content ?? '';
     message.id = getUniqueId();
 
     return message;

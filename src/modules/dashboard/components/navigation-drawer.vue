@@ -54,7 +54,6 @@ const { openDialog, closeDialog } = useDialog();
 function handleLogout(): void {
   const dialogOptions: IDialogOptions = {
     title: i18n.global.t('Logout'),
-    message: '',
     onConfirm: () => {
       userStore.logout();
       closeDialog();

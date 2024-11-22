@@ -13,4 +13,8 @@ export class StaffMember {
 
   @Type(() => Privileges)
   privileges = new Privileges();
+
+  get fullName(): string {
+    return `${this.name} ${this.lastname}`;
+  }
 }

@@ -4,7 +4,7 @@ import { TranslateResult } from 'vue-i18n';
 
 export interface IDialogOptions {
   title: TranslateResult;
-  message: TranslateResult;
+  message?: TranslateResult;
   onConfirm: () => void;
   type?: DialogTypeEnum;
   confirmButtonText?: TranslateResult;
@@ -20,7 +20,7 @@ const dialogType = ref(DialogTypeEnum.DEFAULT);
 export const useDialog = () => {
   function openDialog(options: IDialogOptions): void {
     title.value = options.title;
-    message.value = options.message;
+    message.value = options.message ?? '';
     onConfirm.value = options.onConfirm;
     dialogType.value = options.type || DialogTypeEnum.DEFAULT;
     isVisible.value = true;
