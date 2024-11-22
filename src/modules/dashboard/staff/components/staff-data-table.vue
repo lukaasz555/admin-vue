@@ -1,7 +1,7 @@
 <template>
   <v-data-table-virtual
     :headers="staffTableHeaders"
-    :items="staffStore.staffMembers"
+    :items="staffMembers"
   >
     <template #item.actions="{ item }">
       <TableActionButtons
@@ -14,8 +14,8 @@
 </template>
 
 <script setup lang="ts">
-import { useStaffStore } from '../staff.store';
 import { staffTableHeaders } from '../utils/staff-table-headers';
+import { StaffMember } from '../models/staff-member';
 import TableActionButtons from '../../components/table-action-buttons.vue';
 
 type StaffDataTableEmits = {
@@ -25,10 +25,14 @@ type StaffDataTableEmits = {
 
 const emit = defineEmits<StaffDataTableEmits>();
 
-const staffStore = useStaffStore();
+defineProps({
+  staffMembers: {
+    type: Array as PropType<StaffMember[]>,
+    required: true,
+  },
+});
 
 function onEditClick(staffId: number): void {
-  // TODO: KF-7
   emit('editStaff', staffId);
 }
 

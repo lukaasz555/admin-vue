@@ -14,10 +14,14 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core';
 import { useUserStore } from '@/global/store/user.store';
-import { useDialog } from '@/global/composables/useDialog';
+import {
+  IDialogOptions,
+  useDialog,
+} from '@/global/composables/useDialog';
 import DrawerNavigationMenuItems from './drawer-navigation-menu-items.vue';
 import LanguageChooser from '@/global/components/language-chooser.vue';
 import Button from '@/global/components/button.vue';
+import i18n from '@/plugins/i18n';
 
 const emit = defineEmits<{
   (e: 'update:isOpen', value: boolean): void;
@@ -48,9 +52,14 @@ onClickOutside(navigationDrawer, (e: MouseEvent) => {
 const { openDialog, closeDialog } = useDialog();
 
 function handleLogout(): void {
-  openDialog('Logout', 'Are you sure you want to logout?', () => {
-    userStore.logout();
-    closeDialog();
-  });
+  const dialogOptions: IDialogOptions = {
+    title: i18n.global.t('Logout'),
+    onConfirm: () => {
+      userStore.logout();
+      closeDialog();
+    },
+  };
+
+  openDialog(dialogOptions);
 }
 </script>

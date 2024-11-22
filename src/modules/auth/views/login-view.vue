@@ -6,25 +6,23 @@
 import LoginForm from '../components/login-form.vue';
 import { LoginData } from '../viewModels/login-data';
 import { useMutation } from '@tanstack/vue-query';
-import { login } from '../service/auth.service';
 import { useUserStore } from '@/global/store/user.store';
 import { DashboardRoutesNames } from '@/modules/dashboard/enums/dashboard-routes-names.enum';
 import { Message } from '@/global/models/message';
 import { useGlobalStore } from '@/global/store/global.store';
-import router from '@/plugins/router';
 import { MessageType } from '@/global/enums/message-type.enum';
+import { authService } from '../service/auth.service';
+import router from '@/plugins/router';
+import i18n from '@/plugins/i18n';
 
 const globalStore = useGlobalStore();
 const userStore = useUserStore();
 
 const { isPending, mutate } = useMutation({
-  mutationFn: (data: LoginData) => login(data),
+  mutationFn: (data: LoginData) => authService.login(data),
   onSuccess: (data) => {
     userStore.setUserWithToken(data);
     handleLoginSuccess();
-    router.push({
-      name: DashboardRoutesNames.DASHBOARD,
-    });
   },
 });
 
@@ -34,7 +32,10 @@ async function handleLogin(loginData: LoginData): Promise<void> {
 
 function handleLoginSuccess(): void {
   const message = Message.getMessage(MessageType.SUCCESS);
-  message.content = 'Login successful';
+  message.content = i18n.global.t('Login successful');
   globalStore.addMessage(message);
+  router.push({
+    name: DashboardRoutesNames.DASHBOARD,
+  });
 }
 </script>
