@@ -8,4 +8,5 @@ export enum DashboardModulesEnum {
   SETTINGS = 'settings',
   PAYMENTS = 'payments',
   CATEGORIES = 'categories',
+  DASHBOARD = 'dashboard',
 }

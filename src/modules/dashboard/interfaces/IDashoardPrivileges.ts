@@ -11,4 +11,5 @@ export interface IDashboardPrivileges {
   [DashboardModulesEnum.PAYMENTS]: Privileges;
   [DashboardModulesEnum.REPORTS]: Privileges;
   [DashboardModulesEnum.SETTINGS]: Privileges;
+  [DashboardModulesEnum.DASHBOARD]: Privileges;
 }
