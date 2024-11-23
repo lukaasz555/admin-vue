@@ -12,6 +12,7 @@ export class Privileges implements IDashboardPrivileges {
   [DashboardModulesEnum.REPORTS] = PrivilegesEnum.NOT_ALLOWED;
   [DashboardModulesEnum.STAFF_MEMBERS] = PrivilegesEnum.NOT_ALLOWED;
   [DashboardModulesEnum.SETTINGS] = PrivilegesEnum.NOT_ALLOWED;
+  [DashboardModulesEnum.DASHBOARD] = PrivilegesEnum.NOT_ALLOWED;
 
   setPrivilege(
     key: DashboardModulesEnum,
@@ -41,6 +42,8 @@ export class Privileges implements IDashboardPrivileges {
         this[DashboardModulesEnum.STAFF_MEMBERS],
       [DashboardModulesEnum.CATEGORIES]:
         this[DashboardModulesEnum.CATEGORIES],
+      [DashboardModulesEnum.DASHBOARD]:
+        this[DashboardModulesEnum.DASHBOARD],
     };
   }
 }

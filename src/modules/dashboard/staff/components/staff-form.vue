@@ -20,6 +20,11 @@
       :error-message="getErrorMessage('phoneNumber')"
       :label="$t('Phone number')"
     />
+    <RoleSelect
+      v-if="canEditStaffRole"
+      :current-role="staffData.role"
+      @update="staffData.role = $event"
+    />
   </form>
 </template>
 
@@ -29,6 +34,7 @@ import { StaffData } from '../models/staff-data';
 import { staffSchema } from '../utils/staff-form-schema';
 import { ActionType } from '../../enums/action-type.enum';
 import { useStaffStore } from '../staff.store';
+import RoleSelect from './role-select.vue';
 import Input from '@/global/components/input.vue';
 
 const props = defineProps({
@@ -39,6 +45,10 @@ const props = defineProps({
   actionType: {
     type: String as PropType<ActionType>,
     default: ActionType.ADD,
+  },
+  canEditStaffRole: {
+    type: Boolean,
+    default: false,
   },
 });
 

@@ -6,6 +6,7 @@ export interface IStaffPopupPermissions {
   canRemove: boolean;
   canEditStaffData: boolean;
   canEditStaffPrivileges: boolean;
+  canEditStaffRole: boolean;
 }
 
 export const getStaffPopupPermissions = (
@@ -26,6 +27,10 @@ export const getStaffPopupPermissions = (
         userPrivilege,
         Privileges.FULL,
       ),
+      canEditStaffRole: isPrivilegeSufficient(
+        userPrivilege,
+        Privileges.MANAGE,
+      ),
     };
   } else {
     return {
@@ -33,6 +38,7 @@ export const getStaffPopupPermissions = (
       canRemove: false,
       canEditStaffData: false,
       canEditStaffPrivileges: false,
+      canEditStaffRole: false,
     };
   }
 };

@@ -12,6 +12,7 @@
         <StaffForm
           ref="staffForm"
           :action-type="actionType"
+          :can-edit-staff-role="permissions.canEditStaffRole"
           :staff-id="staffId"
         />
       </v-tabs-window-item>
@@ -26,12 +27,7 @@
       v-if="permissions.canAdd && permissions.canEditStaffData"
       class="mt-5 d-flex justify-center"
     >
-      <Button
-        :label="
-          actionType === ActionType.ADD ? $t('Add') : $t('Edit')
-        "
-        @click="handleConfirm"
-      />
+      <Button :label="confirmButtonLabel" @click="handleConfirm" />
       <Button
         :label="$t('Cancel')"
         variant="text"
@@ -94,6 +90,12 @@ const permissions = computed<IStaffPopupPermissions>(() => {
   return getStaffPopupPermissions(modulePrivileges);
 });
 
+const confirmButtonLabel = computed(() =>
+  props.actionType === ActionType.ADD
+    ? i18n.global.t('Add')
+    : i18n.global.t('Edit'),
+);
+
 const staffForm = ref<InstanceType<typeof StaffForm>>();
 const staffPrivileges = ref<InstanceType<typeof StaffPrivileges>>();
 const currentTab = ref(tabItemsComputed.value[0]);
@@ -122,7 +124,7 @@ async function updateStaffPrivileges(
 ): Promise<void> {
   return new Promise((resolve) => {
     resolve(
-      updatePrivileges.mutate({
+      updatePrivilegesMutation.mutate({
         staffId: props.staffId,
         privileges,
       }),
@@ -130,41 +132,39 @@ async function updateStaffPrivileges(
   });
 }
 
-async function handleStaffDataAndPrivilegesUpdate(
-  staffData: StaffData,
-  newPrivileges: IDashboardPrivileges,
-): Promise<void> {
-  try {
-    await updateStaffData(staffData);
-    await updateStaffPrivileges(newPrivileges);
-  } catch (err) {
-    handleError(
-      i18n.global.t('Error updating staff data and privileges'),
-    );
-    throw new Error('Error updating staff data and privileges');
-  }
-}
-
 async function handleConfirm(): Promise<void> {
   const staffFormInstance = staffForm.value;
   const newPrivileges = staffPrivileges.value?.getNewPrivileges();
 
-  if (
-    !staffFormInstance?.validateForm() ||
-    (props.actionType === ActionType.EDIT && !newPrivileges)
-  ) {
-    throw new Error('Invalid form/privileges data');
+  if (!staffFormInstance) {
+    throw new Error('No staff form instance');
   }
   const staffData = staffFormInstance.getStaffData();
 
   if (props.actionType === ActionType.ADD) {
+    if (!staffFormInstance?.validateForm()) {
+      throw new Error('Invalid form for add user');
+    }
     return createStaffMutation.mutate(staffData);
   }
-  if (props.actionType === ActionType.EDIT && newPrivileges) {
-    return handleStaffDataAndPrivilegesUpdate(
-      staffData,
-      newPrivileges,
-    );
+  if (props.actionType === ActionType.EDIT) {
+    if (staffFormInstance?.validateForm()) {
+      try {
+        await updateStaffData(staffData);
+      } catch (err) {
+        handleError(i18n.global.t('Error updating staff data'));
+        throw new Error('Error updating staff data');
+      }
+    }
+
+    if (newPrivileges) {
+      try {
+        await updateStaffPrivileges(newPrivileges);
+      } catch (err) {
+        handleError(i18n.global.t('Error updating staff privileges'));
+        throw new Error('Error updating staff privileges');
+      }
+    }
   }
 }
 
@@ -182,7 +182,7 @@ const editStaffMutation = useMutation({
     handleSuccess(i18n.global.t('Member updated'), onSuccessCallback);
   },
 });
-const updatePrivileges = useMutation({
+const updatePrivilegesMutation = useMutation({
   mutationFn: (data: {
     staffId: number;
     privileges: IDashboardPrivileges;
