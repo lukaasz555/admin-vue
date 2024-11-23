@@ -1,4 +1,9 @@
-import { Privileges as PrivilegesEnum } from '@/global/enums/privileges.enum';
+import { DashboardModulesEnum } from '../enums/dashboard-modules.enum';
+import { useUserStore } from '@/global/store/user.store';
+import {
+  Privileges,
+  Privileges as PrivilegesEnum,
+} from '@/global/enums/privileges.enum';
 
 export function isPrivilegeSufficient(
   userPrivilege: PrivilegesEnum,
@@ -19,4 +24,13 @@ export function isPrivilegeSufficient(
     case PrivilegesEnum.NOT_ALLOWED:
       return false;
   }
+}
+
+export function hasHigherPrivilegeThanNotAllowed(
+  moduleName: DashboardModulesEnum,
+) {
+  const userStore = useUserStore();
+  const privilege = userStore.getPrivilegesForModule(moduleName);
+
+  return privilege && privilege !== Privileges.NOT_ALLOWED;
 }
