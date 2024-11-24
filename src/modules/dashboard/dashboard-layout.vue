@@ -22,6 +22,7 @@ import { useGlobalStore } from '@/global/store/global.store';
 import ConfirmationDialog from './components/confirmation-dialog.vue';
 import NavigationDrawer from './components/navigation-drawer.vue';
 import AppBar from './components/app-bar.vue';
+import { dashboardQueryKeys } from './dashboard.query-keys';
 
 const isDrawerVisible = ref(false);
 const { isVisible, closeDialog, onConfirm } = useDialog();
@@ -36,10 +37,11 @@ function toggleDrawerVisibility() {
 }
 
 useQuery({
-  queryKey: ['getPrivilegesLimit'],
+  queryKey: [dashboardQueryKeys.GET_PRIVILEGES_LIMITS],
   queryFn: async () => {
     const limits = await dashboardService.getPrivilegesLimits();
     useGlobalStore().setPrivilegeLimits(limits);
+    return limits;
   },
 });
 </script>
