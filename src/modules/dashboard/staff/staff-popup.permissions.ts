@@ -32,13 +32,13 @@ export const getStaffPopupPermissions = (
         Privileges.MANAGE,
       ),
     };
-  } else {
-    return {
-      canAdd: false,
-      canRemove: false,
-      canEditStaffData: false,
-      canEditStaffPrivileges: false,
-      canEditStaffRole: false,
-    };
   }
+
+  return {
+    canAdd: false,
+    canRemove: false,
+    canEditStaffData: false,
+    canEditStaffPrivileges: false,
+    canEditStaffRole: false,
+  };
 };

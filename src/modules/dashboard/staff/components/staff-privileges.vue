@@ -1,8 +1,8 @@
 <template>
   <div class="privileges">
     <StaffPrivilegesItem
-      v-for="(privilegeItem, index) in privilegesItems"
-      :key="index"
+      v-for="privilegeItem in privilegesItems"
+      :key="privilegeItem.privilege"
       class="item"
       :current-value="privilegeItem.value"
       :privilege="privilegeItem.privilege"

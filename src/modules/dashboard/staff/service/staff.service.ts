@@ -38,7 +38,6 @@ class StaffService implements IHttpService {
   async createStaff(staffData: StaffData): Promise<void> {
     // TEMP. solution to align with the current API
     Object.assign(staffData, {
-      role: Roles.ASSISTANT,
       password: 'InitPassword1!',
       phone: staffData.phoneNumber,
     });
