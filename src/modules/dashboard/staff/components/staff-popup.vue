@@ -76,11 +76,9 @@ const props = defineProps({
 });
 
 const tabItemsComputed = computed(() => {
-  if (props.actionType === ActionType.ADD) {
-    return staffPopupTabItems.filter(
-      (el) => el.value !== 'privileges',
-    );
-  } else return staffPopupTabItems;
+  return props.actionType === ActionType.ADD
+    ? staffPopupTabItems.filter((el) => el.value !== 'privileges')
+    : staffPopupTabItems;
 });
 
 const permissions = computed<IStaffPopupPermissions>(() => {

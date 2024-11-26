@@ -45,21 +45,14 @@ onMounted(() => {
 });
 
 const privilegesItems = computed(() => {
-  return Object.entries(privileges.value).map(
-    ([key, value]) =>
-      ({
-        privilege: key,
-        value,
-      }) as {
-        privilege: DashboardModulesEnum;
-        value: PrivilegesEnum;
-      },
-  );
+  return Object.entries(privileges.value).map(([key, value]) => ({
+    privilege: key as DashboardModulesEnum,
+    value: value as PrivilegesEnum,
+  }));
 });
 
 function getNewPrivileges(): IDashboardPrivileges {
-  const newPrivileges = privileges.value.getDataForUpdate();
-  return newPrivileges;
+  return privileges.value.getDataForUpdate();
 }
 
 defineExpose({ getNewPrivileges });

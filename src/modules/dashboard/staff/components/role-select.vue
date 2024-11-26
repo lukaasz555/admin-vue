@@ -25,11 +25,12 @@ const props = defineProps({
   },
 });
 
-const roleItems: SelectItemType[] = [
-  { displayText: Roles.ADMIN, value: Roles.ADMIN },
-  { displayText: Roles.ASSISTANT, value: Roles.ASSISTANT },
-  { displayText: Roles.MANAGER, value: Roles.MANAGER },
-];
+const roleItems: SelectItemType[] = Object.values(Roles).map(
+  (role) => ({
+    displayText: role,
+    value: role,
+  }),
+);
 
 const currentValue = computed({
   get: () => {
