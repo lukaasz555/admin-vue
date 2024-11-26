@@ -112,21 +112,15 @@ function onSuccessCallback(): void {
 }
 
 async function updateStaffData(staffData: StaffData): Promise<void> {
-  return new Promise((resolve) => {
-    resolve(editStaffMutation.mutate(staffData));
-  });
+  editStaffMutation.mutateAsync(staffData);
 }
 
 async function updateStaffPrivileges(
   privileges: IDashboardPrivileges,
 ): Promise<void> {
-  return new Promise((resolve) => {
-    resolve(
-      updatePrivilegesMutation.mutate({
-        staffId: props.staffId,
-        privileges,
-      }),
-    );
+  await updatePrivilegesMutation.mutateAsync({
+    staffId: props.staffId,
+    privileges,
   });
 }
 
