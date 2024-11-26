@@ -4,4 +4,5 @@ export type NavigationItem = {
   title: string;
   routeName: DashboardRoutesNames;
   icon?: string;
+  hasUserAccess: boolean;
 };

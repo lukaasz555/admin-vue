@@ -7,6 +7,7 @@ import { Message } from '@/global/models/message';
 import { useGlobalStore } from '@/global/store/global.store';
 import { DashboardRoutesNames } from '@/modules/dashboard/enums/dashboard-routes-names.enum';
 import { MessageType } from '@/global/enums/message-type.enum';
+import i18n from './i18n';
 
 const routes = [
   {
@@ -46,8 +47,10 @@ router.beforeEach((to, from, next) => {
       userStore.user.role,
     );
     if (!hasUserSufficientRole) {
-      const message = Message.getMessage(MessageType.WARNING);
-      message.content = 'Access denied';
+      const message = Message.getMessage(
+        MessageType.WARNING,
+        i18n.global.t('Access denied'),
+      );
       useGlobalStore().addMessage(message);
       if (!from.name) {
         router.push({ name: DashboardRoutesNames.DASHBOARD });

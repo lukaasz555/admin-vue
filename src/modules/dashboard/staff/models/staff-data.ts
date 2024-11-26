@@ -1,5 +1,6 @@
 import { getUniqueId } from '@/global/helpers/get-unique-id';
 import { StaffMember } from './staff-member';
+import { Roles } from '@/global/enums/roles.enum';
 
 export class StaffData {
   id = -getUniqueId();
@@ -7,6 +8,7 @@ export class StaffData {
   lastname = '';
   email = '';
   phoneNumber = '';
+  role = Roles.ASSISTANT;
 
   setData(data: StaffMember) {
     this.id = data.id;
@@ -14,5 +16,6 @@ export class StaffData {
     this.lastname = data.lastname;
     this.email = data.email;
     this.phoneNumber = data.phone;
+    this.role = data.role;
   }
 }
