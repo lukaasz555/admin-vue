@@ -1,10 +1,9 @@
 import { RouteRecordRaw } from 'vue-router';
 import { DashboardRoutesNames } from './enums/dashboard-routes-names.enum';
 import { DashboardModulesEnum } from './enums/dashboard-modules.enum';
-import { hasHigherPrivilegeThanNotAllowed } from './helpers/privileges.helpers';
 import { Roles } from '@/global/enums/roles.enum';
 import DashboardLayout from './dashboard-layout.vue';
-import router from '@/plugins/router';
+import { privilegesMiddleware } from './helpers/privilegesMiddleware';
 
 export enum DashboardPathNames {
   ROOT = '',
@@ -40,17 +39,9 @@ export const dashboardRoutes: RouteRecordRaw[] = [
           module: DashboardModulesEnum.PRODUCTS,
           roles: [Roles.ADMIN, Roles.MANAGER, Roles.ASSISTANT],
         },
-        beforeEnter: (to, from, next) => {
-          if (
-            hasHigherPrivilegeThanNotAllowed(
-              DashboardModulesEnum.PRODUCTS,
-            )
-          ) {
-            next();
-          } else {
-            router.push({ name: DashboardModulesEnum.DASHBOARD });
-          }
-        },
+        beforeEnter: privilegesMiddleware(
+          DashboardModulesEnum.PRODUCTS,
+        ),
       },
       {
         path: DashboardPathNames.PRODUCT,
@@ -62,17 +53,9 @@ export const dashboardRoutes: RouteRecordRaw[] = [
           module: DashboardModulesEnum.PRODUCTS,
           roles: [Roles.ADMIN, Roles.MANAGER],
         },
-        beforeEnter: (to, from, next) => {
-          if (
-            hasHigherPrivilegeThanNotAllowed(
-              DashboardModulesEnum.PRODUCTS,
-            )
-          ) {
-            next();
-          } else {
-            router.push({ name: DashboardModulesEnum.DASHBOARD });
-          }
-        },
+        beforeEnter: privilegesMiddleware(
+          DashboardModulesEnum.PRODUCTS,
+        ),
       },
       {
         path: DashboardPathNames.STAFF,
@@ -84,17 +67,9 @@ export const dashboardRoutes: RouteRecordRaw[] = [
           module: DashboardModulesEnum.STAFF_MEMBERS,
           roles: [Roles.ADMIN, Roles.MANAGER],
         },
-        beforeEnter: (to, from, next) => {
-          if (
-            hasHigherPrivilegeThanNotAllowed(
-              DashboardModulesEnum.STAFF_MEMBERS,
-            )
-          ) {
-            next();
-          } else {
-            router.push({ name: DashboardModulesEnum.DASHBOARD });
-          }
-        },
+        beforeEnter: privilegesMiddleware(
+          DashboardModulesEnum.STAFF_MEMBERS,
+        ),
       },
       {
         path: DashboardPathNames.CATEGORIES,
@@ -108,17 +83,9 @@ export const dashboardRoutes: RouteRecordRaw[] = [
           module: DashboardModulesEnum.CATEGORIES,
           roles: [Roles.ADMIN, Roles.MANAGER, Roles.ASSISTANT],
         },
-        beforeEnter: (to, from, next) => {
-          if (
-            hasHigherPrivilegeThanNotAllowed(
-              DashboardModulesEnum.CATEGORIES,
-            )
-          ) {
-            next();
-          } else {
-            router.push({ name: DashboardModulesEnum.DASHBOARD });
-          }
-        },
+        beforeEnter: privilegesMiddleware(
+          DashboardModulesEnum.CATEGORIES,
+        ),
       },
     ],
   },

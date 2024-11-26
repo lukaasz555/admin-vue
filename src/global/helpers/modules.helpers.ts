@@ -5,14 +5,18 @@ import { ModulesType } from '../types/modules.type';
 export function isDashboardModulesEnum(
   module: ModulesType,
 ): module is DashboardModulesEnum {
-  return Object.values(DashboardModulesEnum).includes(
-    module as DashboardModulesEnum,
-  );
+  return isModuleType(module, DashboardModulesEnum);
 }
+
 export function isAuthModulesEnum(
   module: ModulesType,
 ): module is AuthModulesEnum {
-  return Object.values(AuthModulesEnum).includes(
-    module as AuthModulesEnum,
-  );
+  return isModuleType(module, AuthModulesEnum);
+}
+
+export function isModuleType<T extends Object>(
+  module: ModulesType,
+  moduleEnum: T,
+): boolean {
+  return Object.values(moduleEnum).includes(module);
 }
