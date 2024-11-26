@@ -51,6 +51,7 @@ const isPopupVisible = computed({
     border-radius: $border-radius-l;
     padding: 1rem;
     background-color: $color-background;
+    overflow: hidden;
   }
   &__header {
     display: flex;

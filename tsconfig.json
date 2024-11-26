@@ -2,12 +2,18 @@
 	"compilerOptions": {
 		"target": "ESNext",
 		"jsx": "preserve",
-		"lib": ["DOM", "ESNext"],
+		"lib": [
+			"DOM",
+			"ESNext"
+		],
 		"baseUrl": ".",
 		"module": "ESNext",
 		"moduleResolution": "bundler",
+		"experimentalDecorators": true,
 		"paths": {
-			"@/*": ["src/*"]
+			"@/*": [
+				"src/*"
+			]
 		},
 		"resolveJsonModule": true,
 		"types": [
@@ -24,7 +30,18 @@
 		"isolatedModules": true,
 		"skipLibCheck": true
 	},
-	"include": ["src/**/*", "src/**/*.vue"],
-	"exclude": ["dist", "node_modules", "cypress"],
-	"references": [{ "path": "./tsconfig.node.json" }]
+	"include": [
+		"src/**/*",
+		"src/**/*.vue"
+	],
+	"exclude": [
+		"dist",
+		"node_modules",
+		"cypress"
+	],
+	"references": [
+		{
+			"path": "./tsconfig.node.json"
+		}
+	]
 }
