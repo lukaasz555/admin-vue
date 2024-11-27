@@ -32,5 +32,6 @@
     "Member updated": "Pracownik zaktualizowany",
     "Edit staff": "Edytuj pracownika",
     "Add staff": "Dodaj pracownika",
-    "Delete": "Usuń"
+    "Delete": "Usuń",
+    "Validating token": "Sprawdzam token"
 }
