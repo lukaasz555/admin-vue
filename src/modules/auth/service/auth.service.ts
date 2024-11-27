@@ -24,6 +24,13 @@ class AuthService implements IHttpService {
       data,
     );
   }
+
+  async sendRecoveryToken(token: string): Promise<void> {
+    return this.httpClient.postData<Record<string, unknown>, void>(
+      `auth/reset-password/${token}`,
+      {},
+    );
+  }
 }
 
 export const authService = new AuthService(new AxiosClient());
