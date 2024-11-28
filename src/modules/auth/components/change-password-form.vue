@@ -10,11 +10,13 @@
         v-model="changePasswordData.newPassword"
         :label="$t('Password')"
         :rules="changePasswordData.rules.newPassword"
+        type="password"
       />
       <Input
         v-model="changePasswordData.confirmPassword"
         :label="$t('Confirm password')"
         :rules="changePasswordData.rules.confirmPassword"
+        type="password"
       />
       <Button
         class="mt-5"

@@ -1,3 +1,9 @@
+import {
+  validateEmail,
+  validatePassword,
+} from '@/global/helpers/validations';
+import i18n from '@/plugins/i18n';
+
 export class LoginData {
   isValid = false;
   email = '';
@@ -5,13 +11,14 @@ export class LoginData {
 
   rules = {
     email: [
-      (v: string) => !!v || 'E-mail is required',
-      (v: string) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      (v: string) => !!v || i18n.global.t('Required field'),
+      (v: string) =>
+        validateEmail(v) || i18n.global.t('Invalid email address'),
     ],
     password: [
-      (v: string) => !!v || 'Password is required',
+      (v: string) => !!v || i18n.global.t('Required field'),
       (v: string) =>
-        v.length >= 8 || 'Password must be at least 8 characters',
+        validatePassword(v) || i18n.global.t('Invalid value'),
     ],
   };
 

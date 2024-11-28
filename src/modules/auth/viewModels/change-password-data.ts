@@ -1,3 +1,7 @@
+import {
+  validateEmail,
+  validatePassword,
+} from '@/global/helpers/validations';
 import i18n from '@/plugins/i18n';
 
 export class ChangePasswordData {
@@ -10,13 +14,12 @@ export class ChangePasswordData {
     email: [
       (v: string) => !!v || i18n.global.t('Required field'),
       (v: string) =>
-        /.+@.+\..+/.test(v) || i18n.global.t('Invalid e-mail'),
+        validateEmail(v) || i18n.global.t('Invalid email address'),
     ],
     newPassword: [
       (v: string) => !!v || i18n.global.t('Required field'),
       (v: string) =>
-        v.length >= 8 ||
-        i18n.global.t('Password must be at least 8 characters'),
+        validatePassword(v) || i18n.global.t('Invalid value'),
     ],
     confirmPassword: [
       (v: string) => !!v || i18n.global.t('Required field'),
