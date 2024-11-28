@@ -22,7 +22,7 @@
         class="mt-5"
         :is-disabled="!changePasswordData.isValid"
         :is-loading="isLoading"
-        :label="$t('Login')"
+        :label="$t('Submit')"
         type="submit"
       />
     </form>

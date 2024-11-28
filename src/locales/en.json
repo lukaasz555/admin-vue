@@ -33,5 +33,15 @@
     "Edit staff": "Edit staff",
     "Add staff": "Add staff",
     "Delete": "Delete",
-    "Validating token": "Validating token"
+    "Validating token": "Validating token",
+    "Invalid value": "Invalid value",
+    "Passwords do not match": "Passwords do not match",
+    "Confirm password": "Confirm password",
+    "Submit": "Submit",
+    "Email has been sent!": "Email has been sent!",
+    "We have sent a password recovery email to": "We have sent a password recovery email to",
+    "Please check your inbox and follow the instructions to reset your password.": "Please check your inbox and follow the instructions to reset your password.",
+    "Reset password": "Reset password",
+    "Login": "Login",
+    "Password changed successfully": "Password changed successfully"
 }
