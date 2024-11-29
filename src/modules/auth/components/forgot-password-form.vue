@@ -9,6 +9,7 @@
       <Button
         class="mb-1"
         :is-disabled="!isValid"
+        :is-loading="isLoading"
         :label="$t('Reset password')"
         type="submit"
       />
@@ -17,15 +18,19 @@
 </template>
 
 <script setup lang="ts">
-import { ForgotPasswordData } from '../viewModels/forgot-password-data';
-import Input from '@/global/components/input.vue';
-import Button from '@/global/components/button.vue';
-import { useValidation } from '@/global/composables/useValidation';
 import { forgotPasswordSchema } from '../schemas/forgot-password.schema';
+import { ForgotPasswordData } from '../viewModels/forgot-password-data';
+import { useValidation } from '@/global/composables/useValidation';
+import Button from '@/global/components/button.vue';
+import Input from '@/global/components/input.vue';
 
 const emit = defineEmits<{
   (e: 'confirm', forgotPasswordData: ForgotPasswordData): void;
 }>();
+
+defineProps({
+  isLoading: { type: Boolean, default: false },
+});
 
 const forgotPasswordData = ref(new ForgotPasswordData());
 

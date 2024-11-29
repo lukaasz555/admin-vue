@@ -32,5 +32,16 @@
     "Member updated": "Pracownik zaktualizowany",
     "Edit staff": "Edytuj pracownika",
     "Add staff": "Dodaj pracownika",
-    "Delete": "Usuń"
+    "Delete": "Usuń",
+    "Validating token": "Sprawdzam token",
+    "Invalid value": "Nieprawidłowa wartość",
+    "Passwords do not match": "Hasła są różne",
+    "Confirm password": "Potwierdź hasło",
+    "Submit": "Wyślij",
+    "Email has been sent!": "Email został wysłany!",
+    "We have sent a password recovery email to": "Wysłaliśmy email z odzyskaniem hasła na",
+    "Please check your inbox and follow the instructions to reset your password.": "Sprawdź swoją skrzynkę odbiorczą i postępuj zgodnie z instrukcjami, aby zresetować hasło.",
+    "Reset password": "Zresetuj hasło",
+    "Login": "Zaloguj",
+    "Password changed successfully": "Hasło zmienione pomyślnie"
 }

@@ -36,6 +36,28 @@ export const authRoutes: RouteRecordRaw[] = [
           roles: [],
         },
       },
+      {
+        path: AuthPathNames.RESET_PASSWORD,
+        name: AuthRoutesNames.RESET_PASSWORD,
+        component: () =>
+          import('@/modules/auth/views/reset-password-view.vue'),
+        meta: {
+          module: AuthModulesEnum.RESET_PASSWORD,
+          requiresAuth: false,
+          roles: [],
+        },
+      },
+      {
+        path: AuthPathNames.CHANGE_PASSWORD,
+        name: AuthRoutesNames.CHANGE_PASSWORD,
+        component: () =>
+          import('@/modules/auth/views/change-password-view.vue'),
+        meta: {
+          module: AuthModulesEnum.CHANGE_PASSWORD,
+          requiresAuth: false,
+          roles: [],
+        },
+      },
     ],
   },
 ];
