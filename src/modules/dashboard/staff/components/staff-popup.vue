@@ -9,8 +9,14 @@
 
     <v-tabs-window v-model="currentTab">
       <v-tabs-window-item :value="tabItemsComputed[0].value">
-        <StaffForm
+        <!-- <StaffForm
           ref="staffForm"
+          :action-type="actionType"
+          :can-edit-staff-role="permissions.canEditStaffRole"
+          :staff-id="staffId"
+        /> -->
+        <StaffForm2
+          ref="staffForm2"
           :action-type="actionType"
           :can-edit-staff-role="permissions.canEditStaffRole"
           :staff-id="staffId"
@@ -56,6 +62,7 @@ import {
   getStaffPopupPermissions,
   IStaffPopupPermissions,
 } from '../staff-popup.permissions';
+import StaffForm2 from './staff-form2.vue';
 
 type StaffPopupEmits = {
   (e: 'close'): void;

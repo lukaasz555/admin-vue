@@ -19,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import i18n from '@/plugins/i18n';
 import { PropType } from 'vue';
 
 type ButtonEmits = {
@@ -28,7 +29,7 @@ type ButtonEmits = {
 const emit = defineEmits<ButtonEmits>();
 
 defineProps({
-  label: { type: String, default: 'Save' },
+  label: { type: String, default: i18n.global.t('Save') },
   align: {
     type: String as PropType<'left' | 'center' | 'right'>,
     default: 'center',
