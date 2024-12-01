@@ -43,5 +43,12 @@
     "Please check your inbox and follow the instructions to reset your password.": "Sprawdź swoją skrzynkę odbiorczą i postępuj zgodnie z instrukcjami, aby zresetować hasło.",
     "Reset password": "Zresetuj hasło",
     "Login": "Zaloguj",
-    "Password changed successfully": "Hasło zmienione pomyślnie"
+    "Password changed successfully": "Hasło zmienione pomyślnie",
+    "Forgot password?": "Zapomniałeś hasła?",
+    "Invalid email": "Nieprawidłowy email",
+    "Password must be at least 8 characters long": "Hasło musi mieć co najmniej 8 znaków",
+    "Password must be at most 60 characters long": "Hasło musi mieć maksymalnie 60 znaków",
+    "Password must contain at least one lowercase letter": "Hasło musi zawierać co najmniej jedną małą literę",
+    "Password must contain at least one uppercase letter": "Hasło musi zawierać co najmniej jedną dużą literę",
+    "Password must contain at least one digit": "Hasło musi zawierać co najmniej jedną cyfrę"
 }
