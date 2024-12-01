@@ -9,13 +9,7 @@
 
     <v-tabs-window v-model="currentTab">
       <v-tabs-window-item :value="tabItemsComputed[0].value">
-        <!-- <StaffForm
-          ref="staffForm"
-          :action-type="actionType"
-          :can-edit-staff-role="permissions.canEditStaffRole"
-          :staff-id="staffId"
-        /> -->
-        <StaffForm2
+        <StaffForm
           ref="staffForm2"
           :action-type="actionType"
           :can-edit-staff-role="permissions.canEditStaffRole"
@@ -52,7 +46,6 @@ import { staffPopupTabItems } from '../utils/staff-popup-tab-items';
 import { IDashboardPrivileges } from '../../interfaces/IDashoardPrivileges';
 import { handleError, handleSuccess } from '../../utils/helpers';
 import StaffPrivileges from './staff-privileges.vue';
-import StaffForm from './staff-form.vue';
 import TabsMenu from '../../components/tabs-menu.vue';
 import Button from '@/global/components/button.vue';
 import i18n from '@/plugins/i18n';
@@ -62,7 +55,7 @@ import {
   getStaffPopupPermissions,
   IStaffPopupPermissions,
 } from '../staff-popup.permissions';
-import StaffForm2 from './staff-form2.vue';
+import StaffForm from './staff-form.vue';
 
 type StaffPopupEmits = {
   (e: 'close'): void;
@@ -101,12 +94,13 @@ const confirmButtonLabel = computed(() =>
     : i18n.global.t('Edit'),
 );
 
-const staffForm = ref<InstanceType<typeof StaffForm>>();
+const staffForm2 = ref<InstanceType<typeof StaffForm>>();
 const staffPrivileges = ref<InstanceType<typeof StaffPrivileges>>();
+
 const currentTab = ref(tabItemsComputed.value[0]);
 
 function handleCancel(): void {
-  const staffFormInstance = staffForm.value;
+  const staffFormInstance = staffForm2.value;
   if (staffFormInstance) {
     staffFormInstance.resetForm();
   }
@@ -132,28 +126,25 @@ async function updateStaffPrivileges(
 }
 
 async function handleConfirm(): Promise<void> {
-  const staffFormInstance = staffForm.value;
+  const staffFormInstance = staffForm2.value;
   const newPrivileges = staffPrivileges.value?.getNewPrivileges();
 
   if (!staffFormInstance) {
     throw new Error('No staff form instance');
   }
+  await staffFormInstance.onSubmit();
+
   const staffData = staffFormInstance.getStaffData();
 
   if (props.actionType === ActionType.ADD) {
-    if (!staffFormInstance?.validateForm()) {
-      throw new Error('Invalid form for add user');
-    }
     return createStaffMutation.mutate(staffData);
   }
   if (props.actionType === ActionType.EDIT) {
-    if (staffFormInstance?.validateForm()) {
-      try {
-        await updateStaffData(staffData);
-      } catch (err) {
-        handleError(i18n.global.t('Error updating staff data'));
-        throw new Error('Error updating staff data');
-      }
+    try {
+      await updateStaffData(staffData);
+    } catch (err) {
+      handleError(i18n.global.t('Error updating staff data'));
+      throw new Error('Error updating staff data');
     }
 
     if (newPrivileges) {

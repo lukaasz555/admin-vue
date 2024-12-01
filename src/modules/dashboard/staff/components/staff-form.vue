@@ -1,41 +1,44 @@
 <template>
-  <form>
+  <form @submit.prevent="onSubmit">
     <Input
-      v-model="staffData.name"
-      :error-message="getErrorMessage('name')"
+      v-model="name"
+      :error-message="errors.name"
       :label="$t('Name')"
     />
     <Input
-      v-model="staffData.lastname"
-      :error-message="getErrorMessage('lastname')"
+      v-model="lastname"
+      :error-message="errors.lastname"
       :label="$t('Last name')"
     />
     <Input
-      v-model="staffData.email"
-      :error-message="getErrorMessage('email')"
+      v-model="email"
+      :error-message="errors.email"
       :label="$t('Email')"
     />
     <Input
-      v-model="staffData.phoneNumber"
-      :error-message="getErrorMessage('phoneNumber')"
-      :label="$t('Phone number')"
+      v-model="phoneNumber"
+      :error-message="errors.phoneNumber"
+      :label="$t('Phone')"
     />
     <RoleSelect
       v-if="canEditStaffRole"
-      :current-role="staffData.role"
-      @update="staffData.role = $event"
+      :current-role="role"
+      @update="role = $event"
     />
   </form>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, PropType } from 'vue';
-import { StaffData } from '../models/staff-data';
-import { staffSchema } from '../utils/staff-form-schema';
+import { z } from 'zod';
+import { toTypedSchema } from '@vee-validate/zod';
+import { useField, useForm } from 'vee-validate';
+import Input from '@/global/components/input.vue';
+import i18n from '@/plugins/i18n';
 import { ActionType } from '../../enums/action-type.enum';
 import { useStaffStore } from '../staff.store';
+import { Roles } from '@/global/enums/roles.enum';
 import RoleSelect from './role-select.vue';
-import Input from '@/global/components/input.vue';
+import { StaffData } from '../models/staff-data';
 
 const props = defineProps({
   staffId: {
@@ -52,51 +55,77 @@ const props = defineProps({
   },
 });
 
-const staffStore = useStaffStore();
-const staffData = ref(new StaffData());
-const errors = ref<Record<string, string>>({});
+const formSchema = toTypedSchema(
+  z.object({
+    name: z.string().min(1, i18n.global.t('Required field')).max(50),
+    lastname: z
+      .string()
+      .min(1, i18n.global.t('Required field'))
+      .max(50),
+    email: z
+      .string()
+      .min(1, i18n.global.t('Required field'))
+      .email(i18n.global.t('Invalid email')),
+    phoneNumber: z
+      .string()
+      .min(1, i18n.global.t('Required field'))
+      .length(9, i18n.global.t('Phone number must be 9 digits'))
+      .regex(/^\d+$/, i18n.global.t('Only digits are allowed')),
+  }),
+);
 
-onMounted(() => {
+const staffStore = useStaffStore();
+const { handleSubmit, errors, resetForm } = useForm({
+  validationSchema: formSchema,
+  initialValues: getFormInitialValues(),
+});
+
+function getFormInitialValues() {
   if (props.actionType === ActionType.EDIT) {
     const member = staffStore.getMember(props.staffId);
     if (member) {
-      staffData.value.setData(member);
+      return {
+        name: member.name,
+        lastname: member.lastname,
+        email: member.email,
+        phoneNumber: member.phone,
+        role: member.role || Roles.ASSISTANT,
+      };
     }
   }
-});
-
-onUnmounted(() => {
-  staffData.value = new StaffData();
-});
-
-function getErrorMessage(key: keyof StaffData): string {
-  return errors.value[key] || '';
+  return {
+    name: '',
+    lastname: '',
+    email: '',
+    phoneNumber: '',
+    role: Roles.ASSISTANT,
+  };
 }
 
-function resetForm(): void {
-  staffData.value = new StaffData();
-}
+const staffData = ref(new StaffData());
+const { value: name } = useField<string>('name');
+const { value: lastname } = useField<string>('lastname');
+const { value: email } = useField<string>('email');
+const { value: phoneNumber } = useField<string>('phoneNumber');
+const { value: role } = useField<Roles>('role');
+
+role.value = getFormInitialValues().role;
+
+const onSubmit = handleSubmit(async (values) => {
+  staffData.value.id =
+    props.actionType === ActionType.EDIT
+      ? props.staffId
+      : staffData.value.id;
+  staffData.value.name = values.name;
+  staffData.value.lastname = values.lastname;
+  staffData.value.email = values.email;
+  staffData.value.phoneNumber = values.phoneNumber;
+  staffData.value.role = role.value;
+});
 
 function getStaffData(): StaffData {
   return staffData.value;
 }
 
-function validateForm(): boolean {
-  const result = staffSchema.safeParse(staffData.value);
-  if (result.success) {
-    errors.value = {};
-    return true;
-  } else {
-    errors.value = {};
-    result.error.issues.forEach((issue) => {
-      if (issue.path.length) {
-        const field = issue.path[0] as string;
-        errors.value[field] = issue.message;
-      }
-    });
-    return false;
-  }
-}
-
-defineExpose({ validateForm, getStaffData, resetForm });
+defineExpose({ getStaffData, resetForm, onSubmit });
 </script>
