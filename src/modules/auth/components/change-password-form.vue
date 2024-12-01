@@ -2,25 +2,24 @@
   <div>
     <form class="form" @submit.prevent="handleConfirm">
       <Input
-        v-model="changePasswordData.email"
+        v-model="email"
+        :error-message="errors.email"
         :label="$t('Email')"
-        :rules="changePasswordData.rules.email"
       />
       <Input
-        v-model="changePasswordData.newPassword"
+        v-model="newPassword"
+        :error-message="errors.newPassword"
         :label="$t('Password')"
-        :rules="changePasswordData.rules.newPassword"
         type="password"
       />
       <Input
-        v-model="changePasswordData.confirmPassword"
+        v-model="confirmPassword"
+        :error-message="errors.confirmPassword"
         :label="$t('Confirm password')"
-        :rules="changePasswordData.rules.confirmPassword"
         type="password"
       />
       <Button
         class="mt-5"
-        :is-disabled="!changePasswordData.isValid"
         :is-loading="isLoading"
         :label="$t('Submit')"
         type="submit"
@@ -30,7 +29,9 @@
 </template>
 
 <script setup lang="ts">
+import { changePasswordFormSchema as validationSchema } from '../utils/schemas';
 import { ChangePasswordData } from '../viewModels/change-password-data';
+import { useField, useForm } from 'vee-validate';
 import Button from '@/global/components/button.vue';
 import Input from '@/global/components/input.vue';
 
@@ -44,17 +45,20 @@ defineProps({
   isLoading: { type: Boolean, default: false },
 });
 
-const changePasswordData = ref(new ChangePasswordData());
+const { handleSubmit, errors } = useForm({
+  validationSchema,
+});
 
-function handleConfirm(): void {
-  emit('confirm', changePasswordData.value);
-}
+const { value: email } = useField<string>('email');
+const { value: newPassword } = useField<string>('newPassword');
+const { value: confirmPassword } =
+  useField<string>('confirmPassword');
 
-watch(
-  () => changePasswordData.value,
-  () => {
-    changePasswordData.value.validate();
-  },
-  { immediate: true, deep: true },
-);
+const handleConfirm = handleSubmit(async ({ email, newPassword }) => {
+  const changePasswordData = new ChangePasswordData(
+    email,
+    newPassword,
+  );
+  emit('confirm', changePasswordData);
+});
 </script>

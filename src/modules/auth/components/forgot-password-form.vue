@@ -1,14 +1,13 @@
 <template>
   <div class="form__wrapper">
-    <form @submit.prevent="handleConfirm">
+    <form @submit.prevent="onSubmit">
       <Input
-        v-model="forgotPasswordData.email"
-        :errors="getError('email')"
+        v-model="email"
+        :error-message="errors.email"
         :label="$t('Email')"
       />
       <Button
         class="mb-1"
-        :is-disabled="!isValid"
         :is-loading="isLoading"
         :label="$t('Reset password')"
         type="submit"
@@ -18,9 +17,9 @@
 </template>
 
 <script setup lang="ts">
-import { forgotPasswordSchema } from '../schemas/forgot-password.schema';
+import { forgotPasswordFormSchema as validationSchema } from '../utils/schemas';
 import { ForgotPasswordData } from '../viewModels/forgot-password-data';
-import { useValidation } from '@/global/composables/useValidation';
+import { useField, useForm } from 'vee-validate';
 import Button from '@/global/components/button.vue';
 import Input from '@/global/components/input.vue';
 
@@ -32,16 +31,14 @@ defineProps({
   isLoading: { type: Boolean, default: false },
 });
 
-const forgotPasswordData = ref(new ForgotPasswordData());
+const { handleSubmit, errors } = useForm({
+  validationSchema,
+});
 
-function handleConfirm(): void {
-  if (isValid.value) {
-    emit('confirm', forgotPasswordData.value);
-  }
-}
+const { value: email } = useField<string>('email');
 
-const { isValid, getError } = useValidation(
-  forgotPasswordSchema,
-  forgotPasswordData,
-);
+const onSubmit = handleSubmit(async ({ email }) => {
+  const forgotPasswordData = new ForgotPasswordData(email);
+  emit('confirm', forgotPasswordData);
+});
 </script>
