@@ -46,7 +46,6 @@ import { staffPopupTabItems } from '../utils/staff-popup-tab-items';
 import { IDashboardPrivileges } from '../../interfaces/IDashoardPrivileges';
 import { handleError, handleSuccess } from '../../utils/helpers';
 import StaffPrivileges from './staff-privileges.vue';
-import StaffForm from './staff-form.vue';
 import TabsMenu from '../../components/tabs-menu.vue';
 import Button from '@/global/components/button.vue';
 import i18n from '@/plugins/i18n';
@@ -56,6 +55,7 @@ import {
   getStaffPopupPermissions,
   IStaffPopupPermissions,
 } from '../staff-popup.permissions';
+import StaffForm from './staff-form.vue';
 
 type StaffPopupEmits = {
   (e: 'close'): void;
@@ -96,6 +96,7 @@ const confirmButtonLabel = computed(() =>
 
 const staffForm = ref<InstanceType<typeof StaffForm>>();
 const staffPrivileges = ref<InstanceType<typeof StaffPrivileges>>();
+
 const currentTab = ref(tabItemsComputed.value[0]);
 
 function handleCancel(): void {
@@ -131,22 +132,19 @@ async function handleConfirm(): Promise<void> {
   if (!staffFormInstance) {
     throw new Error('No staff form instance');
   }
+  await staffFormInstance.onSubmit();
+
   const staffData = staffFormInstance.getStaffData();
 
   if (props.actionType === ActionType.ADD) {
-    if (!staffFormInstance?.validateForm()) {
-      throw new Error('Invalid form for add user');
-    }
     return createStaffMutation.mutate(staffData);
   }
   if (props.actionType === ActionType.EDIT) {
-    if (staffFormInstance?.validateForm()) {
-      try {
-        await updateStaffData(staffData);
-      } catch (err) {
-        handleError(i18n.global.t('Error updating staff data'));
-        throw new Error('Error updating staff data');
-      }
+    try {
+      await updateStaffData(staffData);
+    } catch (err) {
+      handleError(i18n.global.t('Error updating staff data'));
+      throw new Error('Error updating staff data');
     }
 
     if (newPrivileges) {
