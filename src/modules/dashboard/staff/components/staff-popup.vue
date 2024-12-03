@@ -100,10 +100,7 @@ const staffPrivileges = ref<InstanceType<typeof StaffPrivileges>>();
 const currentTab = ref(tabItemsComputed.value[0]);
 
 function handleCancel(): void {
-  const staffFormInstance = staffForm.value;
-  if (staffFormInstance) {
-    staffFormInstance.resetForm();
-  }
+  staffForm.value?.resetForm();
   emit('close');
 }
 

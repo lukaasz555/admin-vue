@@ -55,6 +55,14 @@ const props = defineProps({
   },
 });
 
+const staffFormInitialValues = {
+  name: '',
+  lastname: '',
+  email: '',
+  phoneNumber: '',
+  role: Roles.ASSISTANT,
+};
+
 const formSchema = toTypedSchema(
   z.object({
     name: z.string().min(1, i18n.global.t('Required field')).max(50),
@@ -79,14 +87,6 @@ const { handleSubmit, errors, resetForm } = useForm({
   validationSchema: formSchema,
   initialValues: getFormInitialValues(),
 });
-
-const staffFormInitialValues = {
-  name: '',
-  lastname: '',
-  email: '',
-  phoneNumber: '',
-  role: Roles.ASSISTANT,
-};
 
 function getFormInitialValues() {
   if (props.actionType === ActionType.EDIT) {
