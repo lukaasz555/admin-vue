@@ -80,26 +80,26 @@ const { handleSubmit, errors, resetForm } = useForm({
   initialValues: getFormInitialValues(),
 });
 
+const staffFormInitialValues = {
+  name: '',
+  lastname: '',
+  email: '',
+  phoneNumber: '',
+  role: Roles.ASSISTANT,
+};
+
 function getFormInitialValues() {
   if (props.actionType === ActionType.EDIT) {
     const member = staffStore.getMember(props.staffId);
     if (member) {
       return {
-        name: member.name,
-        lastname: member.lastname,
-        email: member.email,
+        ...member,
         phoneNumber: member.phone,
         role: member.role || Roles.ASSISTANT,
       };
     }
   }
-  return {
-    name: '',
-    lastname: '',
-    email: '',
-    phoneNumber: '',
-    role: Roles.ASSISTANT,
-  };
+  return staffFormInitialValues;
 }
 
 const staffData = ref(new StaffData());
@@ -111,17 +111,20 @@ const { value: role } = useField<Roles>('role');
 
 role.value = getFormInitialValues().role;
 
-const onSubmit = handleSubmit(async (values) => {
-  staffData.value.id =
-    props.actionType === ActionType.EDIT
-      ? props.staffId
-      : staffData.value.id;
-  staffData.value.name = values.name;
-  staffData.value.lastname = values.lastname;
-  staffData.value.email = values.email;
-  staffData.value.phoneNumber = values.phoneNumber;
-  staffData.value.role = role.value;
-});
+const onSubmit = handleSubmit(
+  async ({ name, lastname, email, phoneNumber }) => {
+    staffData.value
+      .setName(name)
+      .setLastname(lastname)
+      .setEmail(email)
+      .setPhoneNumber(phoneNumber)
+      .setRole(role.value);
+
+    if (props.actionType === ActionType.EDIT) {
+      staffData.value.setId(props.staffId);
+    }
+  },
+);
 
 function getStaffData(): StaffData {
   return staffData.value;

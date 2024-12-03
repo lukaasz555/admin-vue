@@ -18,4 +18,34 @@ export class StaffData {
     this.phoneNumber = data.phone;
     this.role = data.role;
   }
+
+  setName(name: string): this {
+    this.name = name;
+    return this;
+  }
+
+  setLastname(lastname: string): this {
+    this.lastname = lastname;
+    return this;
+  }
+
+  setEmail(email: string): this {
+    this.email = email;
+    return this;
+  }
+
+  setPhoneNumber(phoneNumber: string): this {
+    this.phoneNumber = phoneNumber;
+    return this;
+  }
+
+  setRole(role: Roles): this {
+    this.role = role;
+    return this;
+  }
+
+  setId(id: number): this {
+    this.id = id;
+    return this;
+  }
 }

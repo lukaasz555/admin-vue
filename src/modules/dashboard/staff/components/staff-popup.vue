@@ -10,7 +10,7 @@
     <v-tabs-window v-model="currentTab">
       <v-tabs-window-item :value="tabItemsComputed[0].value">
         <StaffForm
-          ref="staffForm2"
+          ref="staffForm"
           :action-type="actionType"
           :can-edit-staff-role="permissions.canEditStaffRole"
           :staff-id="staffId"
@@ -94,13 +94,13 @@ const confirmButtonLabel = computed(() =>
     : i18n.global.t('Edit'),
 );
 
-const staffForm2 = ref<InstanceType<typeof StaffForm>>();
+const staffForm = ref<InstanceType<typeof StaffForm>>();
 const staffPrivileges = ref<InstanceType<typeof StaffPrivileges>>();
 
 const currentTab = ref(tabItemsComputed.value[0]);
 
 function handleCancel(): void {
-  const staffFormInstance = staffForm2.value;
+  const staffFormInstance = staffForm.value;
   if (staffFormInstance) {
     staffFormInstance.resetForm();
   }
@@ -126,7 +126,7 @@ async function updateStaffPrivileges(
 }
 
 async function handleConfirm(): Promise<void> {
-  const staffFormInstance = staffForm2.value;
+  const staffFormInstance = staffForm.value;
   const newPrivileges = staffPrivileges.value?.getNewPrivileges();
 
   if (!staffFormInstance) {
