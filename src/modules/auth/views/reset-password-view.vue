@@ -1,20 +1,12 @@
 <template>
-  <div class="view-container">
-    <div
-      v-if="sendTokenMutation.isPending.value"
-      class="view-container--loading"
-    >
-      <v-progress-circular
-        class="mr-1"
-        color="primary"
-        indeterminate
-        :size="25"
-      ></v-progress-circular>
-      {{ $t('Validating token') }}
-    </div>
+  <div class="auth-view-container">
+    <AuthLoader
+      :is-visible="sendTokenMutation.isPending.value"
+      :message="$t('Validating token')"
+    />
     <div
       v-if="sendTokenMutation.isError.value"
-      class="view-container--error"
+      class="auth-view-container--error"
     >
       <v-icon>mdi-alert-circle</v-icon>
       {{ errorMessage }}
@@ -28,6 +20,7 @@ import { getQueryValues } from '@/global/helpers/get-query-values';
 import { useMutation } from '@tanstack/vue-query';
 import { authService } from '../service/auth.service';
 import { AxiosError } from 'axios';
+import AuthLoader from '../components/auth-loader.vue';
 import router from '@/plugins/router';
 import i18n from '@/plugins/i18n';
 
