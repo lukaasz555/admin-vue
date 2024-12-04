@@ -39,6 +39,13 @@ class AuthService implements IHttpService {
       data,
     );
   }
+
+  async activateAccount(token: string): Promise<void> {
+    return this.httpClient.postData(
+      `auth/activate-account/${token}`,
+      {},
+    );
+  }
 }
 
 export const authService = new AuthService(new AxiosClient());
