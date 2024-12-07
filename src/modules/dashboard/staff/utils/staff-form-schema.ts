@@ -5,7 +5,7 @@ export const staffSchema = z.object({
   name: z.string().min(1, i18n.global.t('Required field')),
   lastname: z.string().min(1, i18n.global.t('Required field')),
   email: z.string().email(i18n.global.t('Invalid email address')),
-  phoneNumber: z
+  phone: z
     .string()
     .length(9, i18n.global.t('Phone number must have 9 digits')),
 });

@@ -16,8 +16,8 @@
       :label="$t('Email')"
     />
     <Input
-      v-model="phoneNumber"
-      :error-message="errors.phoneNumber"
+      v-model="phone"
+      :error-message="errors.phone"
       :label="$t('Phone')"
     />
     <RoleSelect
@@ -59,7 +59,7 @@ const staffFormInitialValues = {
   name: '',
   lastname: '',
   email: '',
-  phoneNumber: '',
+  phone: '',
   role: Roles.ASSISTANT,
 };
 
@@ -74,7 +74,7 @@ const formSchema = toTypedSchema(
       .string()
       .min(1, i18n.global.t('Required field'))
       .email(i18n.global.t('Invalid email')),
-    phoneNumber: z
+    phone: z
       .string()
       .min(1, i18n.global.t('Required field'))
       .length(9, i18n.global.t('Phone number must be 9 digits'))
@@ -94,7 +94,7 @@ function getFormInitialValues() {
     if (member) {
       return {
         ...member,
-        phoneNumber: member.phone,
+        phone: member.phone,
         role: member.role || Roles.ASSISTANT,
       };
     }
@@ -106,18 +106,18 @@ const staffData = ref(new StaffData());
 const { value: name } = useField<string>('name');
 const { value: lastname } = useField<string>('lastname');
 const { value: email } = useField<string>('email');
-const { value: phoneNumber } = useField<string>('phoneNumber');
+const { value: phone } = useField<string>('phone');
 const { value: role } = useField<Roles>('role');
 
 role.value = getFormInitialValues().role;
 
 const onSubmit = handleSubmit(
-  async ({ name, lastname, email, phoneNumber }) => {
+  async ({ name, lastname, email, phone }) => {
     staffData.value
       .setName(name)
       .setLastname(lastname)
       .setEmail(email)
-      .setPhoneNumber(phoneNumber)
+      .setPhone(phone)
       .setRole(role.value);
 
     if (props.actionType === ActionType.EDIT) {

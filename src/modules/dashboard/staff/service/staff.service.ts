@@ -1,6 +1,5 @@
 import { IHttpClient } from '@/global/interfaces/http-client';
 import { IHttpService } from '@/global/interfaces/http-service';
-import { Roles } from '@/global/enums/roles.enum';
 import { StaffData } from '../models/staff-data';
 import { AxiosClient } from '@/global/utils/axios-client';
 import { StaffMember } from '../models/staff-member';
@@ -27,8 +26,6 @@ class StaffService implements IHttpService {
   }
 
   async editStaff(staffData: StaffData): Promise<void> {
-    // TODO: Implement this method (API side)
-
     return this.httpClient.patchData<StaffData, void>(
       `staffMembers/${staffData.id}`,
       staffData,
@@ -36,10 +33,8 @@ class StaffService implements IHttpService {
   }
 
   async createStaff(staffData: StaffData): Promise<void> {
-    // TEMP. solution to align with the current API
     Object.assign(staffData, {
       password: 'InitPassword1!',
-      phone: staffData.phoneNumber,
     });
 
     return this.httpClient.postData<StaffData, void>(

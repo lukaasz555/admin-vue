@@ -7,7 +7,7 @@ export class StaffData {
   name = '';
   lastname = '';
   email = '';
-  phoneNumber = '';
+  phone = '';
   role = Roles.ASSISTANT;
 
   setData(data: StaffMember) {
@@ -15,7 +15,7 @@ export class StaffData {
     this.name = data.name;
     this.lastname = data.lastname;
     this.email = data.email;
-    this.phoneNumber = data.phone;
+    this.phone = data.phone;
     this.role = data.role;
   }
 
@@ -34,8 +34,8 @@ export class StaffData {
     return this;
   }
 
-  setPhoneNumber(phoneNumber: string): this {
-    this.phoneNumber = phoneNumber;
+  setPhone(phone: string): this {
+    this.phone = phone;
     return this;
   }
 
