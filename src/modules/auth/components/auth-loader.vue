@@ -7,12 +7,13 @@
       :size="25"
     ></v-progress-circular>
     <span v-if="message">
-      {{ $t('Validating token') }}
+      {{ message }}
     </span>
   </div>
 </template>
 
 <script setup lang="ts">
+import i18n from '@/plugins/i18n';
 import { PropType } from 'vue';
 import { TranslateResult } from 'vue-i18n';
 
@@ -23,7 +24,7 @@ defineProps({
   },
   message: {
     type: String as PropType<TranslateResult>,
-    default: '',
+    default: i18n.global.t('Validating token'),
   },
 });
 </script>

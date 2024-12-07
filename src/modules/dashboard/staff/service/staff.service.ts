@@ -33,10 +33,6 @@ class StaffService implements IHttpService {
   }
 
   async createStaff(staffData: StaffData): Promise<void> {
-    Object.assign(staffData, {
-      password: 'InitPassword1!',
-    });
-
     return this.httpClient.postData<StaffData, void>(
       'staffMembers',
       staffData,
