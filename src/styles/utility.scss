@@ -4,7 +4,21 @@
     align-items: center;
     font-size: 1.25rem;
 
+    .text {
+        color: $color-text;
+        font-size: 1rem;
+
+        &--link {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+
     &--error {
         color: $color-error;
+    }
+
+    &--success {
+        color: $color-success;
     }
 }

@@ -50,5 +50,11 @@
     "Password must be at most 60 characters long": "Password must be at most 60 characters long",
     "Password must contain at least one lowercase letter": "Password must contain at least one lowercase letter",
     "Password must contain at least one uppercase letter": "Password must contain at least one uppercase letter",
-    "Password must contain at least one digit": "Password must contain at least one digit"
+    "Password must contain at least one digit": "Password must contain at least one digit",
+    "You will be redirected to a login page in {secondsLeftToRedirect} seconds": "You will be redirected to a login page in {secondsLeftToRedirect} seconds.",
+    "Click here": "Click here",
+    "to see login page now": "to see login page now.",
+    "Save": "Save",
+    "Your account is active": "Your account is active",
+    "Invalid token": "Invalid token"
 }
