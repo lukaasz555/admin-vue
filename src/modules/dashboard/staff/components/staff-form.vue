@@ -94,7 +94,6 @@ function getFormInitialValues() {
     if (member) {
       return {
         ...member,
-        phone: member.phone,
         role: member.role || Roles.ASSISTANT,
       };
     }
