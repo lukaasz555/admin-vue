@@ -58,6 +58,17 @@ export const authRoutes: RouteRecordRaw[] = [
           roles: [],
         },
       },
+      {
+        path: AuthPathNames.ACCOUNT_ACTIVATION,
+        name: AuthRoutesNames.ACCOUNT_ACTIVATION,
+        component: () =>
+          import('@/modules/auth/views/activation-view.vue'),
+        meta: {
+          module: AuthModulesEnum.ACCOUNT_ACTIVATION,
+          requiresAuth: false,
+          roles: [],
+        },
+      },
     ],
   },
 ];

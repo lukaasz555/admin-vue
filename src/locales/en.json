@@ -50,5 +50,14 @@
     "Password must be at most 60 characters long": "Password must be at most 60 characters long",
     "Password must contain at least one lowercase letter": "Password must contain at least one lowercase letter",
     "Password must contain at least one uppercase letter": "Password must contain at least one uppercase letter",
-    "Password must contain at least one digit": "Password must contain at least one digit"
+    "Password must contain at least one digit": "Password must contain at least one digit",
+    "New password redirection": "You will be redirected to new password form in {secondsLeftToRedirect} seconds.",
+    "Click here": "Click here",
+    "to see form now": "to see form now.",
+    "Save": "Save",
+    "Your account is active": "Your account is active",
+    "Invalid token": "Invalid token",
+    "Privileges updated": "Privileges updated",
+    "Error updating staff data": "Error updating staff data",
+    "Error updating staff privileges": "Error updating staff privileges"
 }

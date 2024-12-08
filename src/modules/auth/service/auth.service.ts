@@ -27,7 +27,7 @@ class AuthService implements IHttpService {
   }
 
   async sendRecoveryToken(token: string): Promise<void> {
-    return this.httpClient.postData<Record<string, unknown>, void>(
+    return this.httpClient.postData(
       `auth/reset-password/${token}`,
       {},
     );
@@ -37,6 +37,13 @@ class AuthService implements IHttpService {
     return this.httpClient.patchData<ChangePasswordData, void>(
       'auth/change-password',
       data,
+    );
+  }
+
+  async activateAccount(token: string): Promise<void> {
+    return this.httpClient.postData(
+      `auth/activate-account/${token}`,
+      {},
     );
   }
 }

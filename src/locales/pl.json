@@ -50,5 +50,14 @@
     "Password must be at most 60 characters long": "Hasło musi mieć maksymalnie 60 znaków",
     "Password must contain at least one lowercase letter": "Hasło musi zawierać co najmniej jedną małą literę",
     "Password must contain at least one uppercase letter": "Hasło musi zawierać co najmniej jedną dużą literę",
-    "Password must contain at least one digit": "Hasło musi zawierać co najmniej jedną cyfrę"
+    "Password must contain at least one digit": "Hasło musi zawierać co najmniej jedną cyfrę",
+    "New password redirection": "Zostaniesz przekierowany do formularza hasła za {secondsLeftToRedirect} sekund.",
+    "Click here": "Kliknij tutaj",
+    "to see form now": "aby przejść do strony logowania.",
+    "Save": "Zapisz",
+    "Your account is active": "Twoje konto jest aktywne",
+    "Invalid token": "Nieprawidłowy token",
+    "Privileges updated": "Uprawnienia zaktualizowane",
+    "Error updating staff data": "Błąd podczas aktualizacji danych pracownika",
+    "Error updating staff privileges": "Błąd podczas aktualizacji uprawnień pracownika"
 }

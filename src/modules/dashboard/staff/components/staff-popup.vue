@@ -27,8 +27,14 @@
       v-if="permissions.canAdd && permissions.canEditStaffData"
       class="mt-5 d-flex justify-center"
     >
-      <Button :label="confirmButtonLabel" @click="handleConfirm" />
       <Button
+        :is-disabled="isAnyMutationPending"
+        :is-loading="isAnyMutationPending"
+        :label="confirmButtonLabel"
+        @click="handleConfirm"
+      />
+      <Button
+        :is-disabled="isAnyMutationPending"
         :label="$t('Cancel')"
         variant="text"
         @click="handleCancel"
@@ -42,20 +48,20 @@ import { staffService } from '../service/staff.service';
 import { StaffData } from '../models/staff-data';
 import { ActionType } from '../../enums/action-type.enum';
 import { useMutation } from '@tanstack/vue-query';
+import { useUserStore } from '@/global/store/user.store';
 import { staffPopupTabItems } from '../utils/staff-popup-tab-items';
 import { IDashboardPrivileges } from '../../interfaces/IDashoardPrivileges';
 import { handleError, handleSuccess } from '../../utils/helpers';
-import StaffPrivileges from './staff-privileges.vue';
-import TabsMenu from '../../components/tabs-menu.vue';
-import Button from '@/global/components/button.vue';
-import i18n from '@/plugins/i18n';
-import { useUserStore } from '@/global/store/user.store';
 import { DashboardModulesEnum } from '../../enums/dashboard-modules.enum';
 import {
   getStaffPopupPermissions,
   IStaffPopupPermissions,
 } from '../staff-popup.permissions';
+import StaffPrivileges from './staff-privileges.vue';
 import StaffForm from './staff-form.vue';
+import TabsMenu from '../../components/tabs-menu.vue';
+import Button from '@/global/components/button.vue';
+import i18n from '@/plugins/i18n';
 
 type StaffPopupEmits = {
   (e: 'close'): void;
@@ -63,6 +69,14 @@ type StaffPopupEmits = {
 };
 
 const emit = defineEmits<StaffPopupEmits>();
+
+const isAnyMutationPending = computed(() => {
+  return (
+    createStaffMutation.isPending.value ||
+    editStaffMutation.isPending.value ||
+    updatePrivilegesMutation.isPending.value
+  );
+});
 
 const props = defineProps({
   staffId: {
@@ -100,10 +114,7 @@ const staffPrivileges = ref<InstanceType<typeof StaffPrivileges>>();
 const currentTab = ref(tabItemsComputed.value[0]);
 
 function handleCancel(): void {
-  const staffFormInstance = staffForm.value;
-  if (staffFormInstance) {
-    staffFormInstance.resetForm();
-  }
+  staffForm.value?.resetForm();
   emit('close');
 }
 

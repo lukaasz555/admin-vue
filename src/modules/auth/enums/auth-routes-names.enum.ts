@@ -4,4 +4,5 @@ export enum AuthRoutesNames {
   FORGOT_PASSWORD = 'forgot-password',
   RESET_PASSWORD = 'reset-password',
   CHANGE_PASSWORD = 'change-password',
+  ACCOUNT_ACTIVATION = 'account-activation',
 }
