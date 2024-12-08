@@ -51,7 +51,7 @@
     "Password must contain at least one lowercase letter": "Hasło musi zawierać co najmniej jedną małą literę",
     "Password must contain at least one uppercase letter": "Hasło musi zawierać co najmniej jedną dużą literę",
     "Password must contain at least one digit": "Hasło musi zawierać co najmniej jedną cyfrę",
-    "You will be redirected to new password form in {secondsLeftToRedirect} seconds": "Zostaniesz przekierowany do formularza hasła za {secondsLeftToRedirect} sekund.",
+    "New password redirection": "Zostaniesz przekierowany do formularza hasła za {secondsLeftToRedirect} sekund.",
     "Click here": "Kliknij tutaj",
     "to see form now": "aby przejść do strony logowania.",
     "Save": "Zapisz",

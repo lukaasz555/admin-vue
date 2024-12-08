@@ -51,7 +51,7 @@
     "Password must contain at least one lowercase letter": "Password must contain at least one lowercase letter",
     "Password must contain at least one uppercase letter": "Password must contain at least one uppercase letter",
     "Password must contain at least one digit": "Password must contain at least one digit",
-    "You will be redirected to new password form in {secondsLeftToRedirect} seconds": "You will be redirected to new password form in {secondsLeftToRedirect} seconds.",
+    "New password redirection": "You will be redirected to new password form in {secondsLeftToRedirect} seconds.",
     "Click here": "Click here",
     "to see form now": "to see form now.",
     "Save": "Save",

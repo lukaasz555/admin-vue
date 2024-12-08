@@ -21,10 +21,7 @@
 
       <p class="text text-center mt-5 mb-3">
         {{
-          $t(
-            'You will be redirected to new password form in {secondsLeftToRedirect} seconds',
-            { secondsLeftToRedirect: secondsLeftToRedirect },
-          )
+          $t('New password redirection', { secondsLeftToRedirect })
         }}
       </p>
       <p class="text text-center">
@@ -57,6 +54,7 @@ const sendActivationTokenMutation = useMutation({
     startCounterAndRedirect();
   },
   onError: (err) => {
+    startCounterAndRedirect();
     if (err instanceof AxiosError) {
       errorMessage.value =
         err.response?.data?.message ??
