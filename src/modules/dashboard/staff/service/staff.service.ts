@@ -1,6 +1,5 @@
 import { IHttpClient } from '@/global/interfaces/http-client';
 import { IHttpService } from '@/global/interfaces/http-service';
-import { Roles } from '@/global/enums/roles.enum';
 import { StaffData } from '../models/staff-data';
 import { AxiosClient } from '@/global/utils/axios-client';
 import { StaffMember } from '../models/staff-member';
