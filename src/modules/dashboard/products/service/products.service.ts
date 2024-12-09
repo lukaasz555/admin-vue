@@ -4,6 +4,7 @@ import { Product } from '../models/product';
 import { plainToInstance } from 'class-transformer';
 import { AxiosClient } from '@/global/utils/axios-client';
 import { PaginationResult } from '@/global/interfaces/pagination-result';
+import { PaginationData } from '@/global/models/pagination-data';
 
 class ProductsService implements IHttpService {
   httpClient: IHttpClient;
@@ -12,11 +13,16 @@ class ProductsService implements IHttpService {
     this.httpClient = httpClient;
   }
 
-  async getProducts(): Promise<Product[]> {
+  async getProducts(
+    paginationData: PaginationData,
+  ): Promise<Product[]> {
     const result =
       await this.httpClient.getData<PaginationResult<Product>>(
         'products',
       );
+    paginationData
+      .setTotalPages(result.meta.totalPages)
+      .setTotalRecords(result.meta.totalRecords);
     return plainToInstance(Product, result.items);
   }
 
