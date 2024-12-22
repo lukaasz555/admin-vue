@@ -77,6 +77,7 @@ export class AxiosClient extends ApiClient {
 
   handleApiError<R>(err: unknown): R {
     const globalStore = useGlobalStore();
+    const userStore = useUserStore();
     const errorMessage = Message.getMessage(MessageType.ERROR);
 
     errorMessage.content =
@@ -85,6 +86,13 @@ export class AxiosClient extends ApiClient {
     if (err instanceof AxiosError) {
       errorMessage.content =
         err.response?.data?.message ?? errorMessage.content;
+
+      if (
+        err.status === 401 &&
+        errorMessage.content === 'Invalid token'
+      ) {
+        userStore.logout();
+      }
     }
 
     globalStore.addMessage(errorMessage);
