@@ -17,6 +17,9 @@ import { PaginationData } from '@/global/models/pagination-data';
 import { productsQueryKeys } from './utils/products.query-keys';
 import { useProductsStore } from './products.store';
 import { productsService } from './service/products.service';
+import { IPageOptions } from '@/global/interfaces/page-options';
+import { usePagination } from '@/global/composables/usePagination';
+import { Product } from './models/product';
 import ProductsDataTable from './components/products-data-table.vue';
 import Loader from '../components/loader.vue';
 
@@ -34,13 +37,12 @@ const getProductsQuery = useQuery({
   },
 });
 
-function updateOptions(options: {
-  page: number;
-  itemsPerPage: number;
-}): void {
-  paginationData.value
-    .setPage(options.page)
-    .setLimit(options.itemsPerPage);
-  getProductsQuery.refetch();
+const { onPageChange } = usePagination<PaginationData, Product[]>(
+  [productsQueryKeys.GET_PRODUCTS],
+  paginationData,
+  getProductsQuery.refetch,
+);
+function updateOptions(options: IPageOptions): void {
+  onPageChange(options);
 }
 </script>

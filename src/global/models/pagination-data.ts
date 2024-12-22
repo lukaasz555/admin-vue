@@ -3,6 +3,7 @@ export class PaginationData {
   totalPages = 0;
   page = 1;
   limit = 10;
+  offset = 0;
 
   setTotalRecords(totalRecords: number): this {
     this.totalRecords = totalRecords;
@@ -22,5 +23,17 @@ export class PaginationData {
   setLimit(limit: number): this {
     this.limit = limit;
     return this;
+  }
+
+  onNextPage(): void {
+    if (this.page < this.totalPages) {
+      this.page++;
+    }
+  }
+
+  onPrevPage(): void {
+    if (this.page > 1) {
+      this.page--;
+    }
   }
 }
